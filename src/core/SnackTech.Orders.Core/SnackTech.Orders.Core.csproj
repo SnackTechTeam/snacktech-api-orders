@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\Entities\" />
+    <Folder Include="Domain\Util\" />
+    <Folder Include="Domain\Types\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Presenters\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\SnackTech.Orders.Common\SnackTech.Orders.Common.csproj" />
+  </ItemGroup>
+
+</Project>
