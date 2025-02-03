@@ -4,10 +4,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>31ac8dd1-6208-4040-a252-01fc8e05ec1b</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	  <DockerfileContext>..\..</DockerfileContext>
     <InvariantGlobalization>false</InvariantGlobalization>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
 	<DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 <PropertyGroup>

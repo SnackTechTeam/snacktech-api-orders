@@ -17,11 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.Dat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra.web-api", "infra.web-api", "{4D96D5FE-C997-49B0-B39A-1D518421A69C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.API", "src\infra.web-api\SnackTech.Orders.Driving.API\SnackTech.Orders.Driver.API.csproj", "{0AA490D3-CDB2-4B78-B7F6-F5A58FCBA2B4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.Payments", "src\infra.persistence\SnackTech.Orders.Driver.Payments\SnackTech.Orders.Driver.Payments.csproj", "{78D40312-E1EF-4215-9D92-2390A04EE6EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.Products", "src\infra.persistence\SnackTech.Orders.Driver.Products\SnackTech.Orders.Driver.Products.csproj", "{77342771-882E-4917-832C-2BCBE7DF27D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.API", "src\infra.web-api\SnackTech.Orders.Driver.API\SnackTech.Orders.Driver.API.csproj", "{48FF1333-2623-4432-A3C8-AD9487F086EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,6 @@ Global
 		{69DC2F19-83CA-469C-A1CC-0F3E3DE769D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69DC2F19-83CA-469C-A1CC-0F3E3DE769D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69DC2F19-83CA-469C-A1CC-0F3E3DE769D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0AA490D3-CDB2-4B78-B7F6-F5A58FCBA2B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AA490D3-CDB2-4B78-B7F6-F5A58FCBA2B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0AA490D3-CDB2-4B78-B7F6-F5A58FCBA2B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0AA490D3-CDB2-4B78-B7F6-F5A58FCBA2B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78D40312-E1EF-4215-9D92-2390A04EE6EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78D40312-E1EF-4215-9D92-2390A04EE6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D40312-E1EF-4215-9D92-2390A04EE6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +49,10 @@ Global
 		{77342771-882E-4917-832C-2BCBE7DF27D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77342771-882E-4917-832C-2BCBE7DF27D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77342771-882E-4917-832C-2BCBE7DF27D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,8 +61,8 @@ Global
 		{177AA112-59B2-479F-BAC8-3DA6F2CD308B} = {2DBABFB1-22EF-4844-B0DE-37FDCFDEAFCC}
 		{4BAF834E-E9A3-447B-BF8C-08BFB596ADDB} = {10BC8E77-9EE8-426D-AE2F-53256C9446FE}
 		{69DC2F19-83CA-469C-A1CC-0F3E3DE769D5} = {15DB9E84-21DC-4620-8F42-1793135DA039}
-		{0AA490D3-CDB2-4B78-B7F6-F5A58FCBA2B4} = {4D96D5FE-C997-49B0-B39A-1D518421A69C}
 		{78D40312-E1EF-4215-9D92-2390A04EE6EF} = {15DB9E84-21DC-4620-8F42-1793135DA039}
 		{77342771-882E-4917-832C-2BCBE7DF27D1} = {15DB9E84-21DC-4620-8F42-1793135DA039}
+		{48FF1333-2623-4432-A3C8-AD9487F086EF} = {4D96D5FE-C997-49B0-B39A-1D518421A69C}
 	EndGlobalSection
 EndGlobal
