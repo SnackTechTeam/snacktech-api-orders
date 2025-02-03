@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.API", "src\infra.web-api\SnackTech.Orders.Driver.API\SnackTech.Orders.Driver.API.csproj", "{48FF1333-2623-4432-A3C8-AD9487F086EF}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "src\docker-compose.dcproj", "{FB30F8AE-F6C9-4BD2-848B-379B5B884726}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48FF1333-2623-4432-A3C8-AD9487F086EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
