@@ -80,7 +80,8 @@ public class PedidoGateway(IPedidoDataSource dataSource)
             Id = pedidoItem.Id,
             Quantidade = pedidoItem.Quantidade.Valor,
             Observacao = pedidoItem.Observacao,
-            Valor = pedidoItem.Valor(),
+            ValorTotal = pedidoItem.Valor(),
+            ValorUnitario = pedidoItem.Produto.Valor,
             ProdutoId = pedidoItem.Produto.Id
         };
     }
@@ -98,12 +99,11 @@ public class PedidoGateway(IPedidoDataSource dataSource)
 
     internal static PedidoItem ConverterItemParaEntidade(PedidoItemDto pedidoItemDto)
     {
-        return null;
-        //return new PedidoItem(
-        //    pedidoItemDto.Id, 
-        //    ProdutoGateway.ConverterParaEntidade(pedidoItemDto.Produto),
-        //    pedidoItemDto.Quantidade, 
-        //    pedidoItemDto.Observacao
-        //);
+        return new PedidoItem(
+            pedidoItemDto.Id,
+            new Produto(pedidoItemDto.ProdutoId, pedidoItemDto.ValorUnitario),
+            pedidoItemDto.Quantidade,
+            pedidoItemDto.Observacao
+        );
     }
 }

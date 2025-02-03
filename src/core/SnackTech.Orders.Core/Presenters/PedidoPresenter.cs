@@ -3,7 +3,7 @@ using SnackTech.Orders.Core.Domain.Entities;
 
 namespace SnackTech.Orders.Core.Presenters;
 
-internal class PedidoPresenter
+internal static class PedidoPresenter
 {
     internal static ResultadoOperacao<PedidoRetornoDto> ApresentarResultadoPedido(Pedido pedido)
     {
@@ -56,11 +56,11 @@ internal class PedidoPresenter
             DataCriacao = pedido.DataCriacao.Valor,
             Status = pedido.Status.Valor,
             Cliente = ClientePresenter.ConverterParaDto(pedido.Cliente),
-            Itens = pedido.Itens.Select(converterItemParaDto)
+            Itens = pedido.Itens.Select(ConverterItemParaDto)
         };
     }
 
-    private static PedidoItemRetornoDto converterItemParaDto(PedidoItem pedidoItem)
+    private static PedidoItemRetornoDto ConverterItemParaDto(PedidoItem pedidoItem)
     {
         return new PedidoItemRetornoDto
         {
@@ -68,7 +68,7 @@ internal class PedidoPresenter
             Quantidade = pedidoItem.Quantidade.Valor,
             Observacao = pedidoItem.Observacao,
             Valor = pedidoItem.Valor(),
-            //Produto = ProdutoPresenter.ConverterParaDto(pedidoItem.Produto)
+            IdentificacaoProduto = pedidoItem.Produto.Id
         };
     }
 }
