@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using SnackTech.Orders.Common.Dto.ApiSources;
 using SnackTech.Orders.Driver.API.Configuration;
 using SnackTech.Orders.Driver.API.Configuration.HealthChecks;
 using SnackTech.Orders.Driver.DataBase;
@@ -8,6 +7,8 @@ using SnackTech.Orders.Driver.DataBase.Context;
 using System.Reflection;
 using SnackTech.Orders.Driver.Products;
 using SnackTech.Orders.Driver.Payments;
+using SnackTech.Orders.Common.Dto.ApiSources.Payments;
+using SnackTech.Orders.Common.Dto.ApiSources.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 namespace SnackTech.Orders.Common.Dto.Api
 {
-    public class PedidoPagamentoDto
+    public class PagamentoDto
     {
         public Guid Id { get; set; }
         public string QrCode { get; set; } = default!;

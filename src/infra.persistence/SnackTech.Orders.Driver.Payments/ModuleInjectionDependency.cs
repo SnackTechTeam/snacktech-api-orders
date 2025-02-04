@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Refit;
-using SnackTech.Orders.Common.Dto.ApiSources;
+using SnackTech.Orders.Common.Dto.ApiSources.Payments;
 using SnackTech.Orders.Common.Interfaces.ApiSources;
 using SnackTech.Orders.Driver.Payments.HttpApiClients;
 using SnackTech.Orders.Driver.Payments.Services;

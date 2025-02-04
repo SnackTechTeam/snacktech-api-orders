@@ -94,7 +94,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao, PedidoGateway pedidoGateway, PagamentoGateway pagamentoGateway)
+    internal static async Task<ResultadoOperacao<PagamentoDto>> FinalizarPedidoParaPagamento(string identificacao, PedidoGateway pedidoGateway, PagamentoGateway? pagamentoGateway)
     {
         try
         {
@@ -102,7 +102,7 @@ internal static class PedidoUseCase
 
             if (pedido is null)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível finalizar para pagamento o pedido com identificação {identificacao}. Pedido não localizado.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível finalizar para pagamento o pedido com identificação {identificacao}. Pedido não localizado.");
             }
 
             pedido.FecharPedidoParaPagamento();
@@ -110,32 +110,36 @@ internal static class PedidoUseCase
             var foiAtualizado = await pedidoGateway.AtualizarStatusPedido(pedido);
 
             if (!foiAtualizado)
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível finalizar para pagamento o pedido com identificação {identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível finalizar para pagamento o pedido com identificação {identificacao}.");
 
-            //TODO: Fazer aqui o envio para a API de Pagamentos?
-            var resultado = await pagamentoGateway.IntegrarPedidoAsync(pedido);
-
-            if (resultado.TeveExcecao())
+            var qrCode = string.Empty;
+            if (pagamentoGateway is not null)
             {
-                throw resultado.Excecao;
+                var resultado = await pagamentoGateway.CriarPagamentoAsync(pedido);
+
+                if (resultado.TeveExcecao())
+                {
+                    throw resultado.Excecao;
+                }
+
+                if (!resultado.TeveSucesso())
+                {
+                    return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>(resultado.Mensagem);
+                }
+
+                var dadoPagamento = resultado.RecuperarDados();
+                qrCode = dadoPagamento.QrCode;
             }
 
-            if (!resultado.TeveSucesso())
-            {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>(resultado.Mensagem);
-            }
-
-            var dadoPagamento = resultado.RecuperarDados();
-
-            return PedidoPresenter.ApresentarResultadoPedido(pedido, dadoPagamento);
+            return PedidoPresenter.ApresentarResultadoPedido(pedido, qrCode);
         }
         catch (ArgumentException ex)
         {
-            return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>(ex.Message);
+            return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>(ex.Message);
         }
         catch (Exception ex)
         {
-            return GeralPresenter.ApresentarResultadoErroInterno<PedidoPagamentoDto>(ex);
+            return GeralPresenter.ApresentarResultadoErroInterno<PagamentoDto>(ex);
         }
     }
 
@@ -247,7 +251,7 @@ internal static class PedidoUseCase
 
             if (!foiAtualizado)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível iniciar o preparo o pedido com identificação {identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível iniciar o preparo o pedido com identificação {identificacao}.");
             }
 
             return PedidoPresenter.ApresentarResultadoOk();
@@ -279,7 +283,7 @@ internal static class PedidoUseCase
 
             if (!foiAtualizado)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível concluir o preparo o pedido com identificação {identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível concluir o preparo o pedido com identificação {identificacao}.");
             }
 
             return PedidoPresenter.ApresentarResultadoOk();
@@ -311,7 +315,7 @@ internal static class PedidoUseCase
 
             if (!foiAtualizado)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoPagamentoDto>($"Não foi possível finalizar o pedido com identificação {identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível finalizar o pedido com identificação {identificacao}.");
             }
 
             return PedidoPresenter.ApresentarResultadoOk();

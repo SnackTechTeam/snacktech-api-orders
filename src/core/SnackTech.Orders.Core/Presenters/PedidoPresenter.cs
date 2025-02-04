@@ -27,10 +27,10 @@ internal static class PedidoPresenter
         return new ResultadoOperacao<Guid>(guidPedido);
     }
 
-    internal static ResultadoOperacao<PedidoPagamentoDto> ApresentarResultadoPedido(Pedido pedido, string dadoPagamento)
+    internal static ResultadoOperacao<PagamentoDto> ApresentarResultadoPedido(Pedido pedido, string dadoPagamento)
     {
         var pedidoPagamento = ConverterParaPagamentoDto(pedido, dadoPagamento);
-        return new ResultadoOperacao<PedidoPagamentoDto>(pedidoPagamento);
+        return new ResultadoOperacao<PagamentoDto>(pedidoPagamento);
     }
 
     internal static ResultadoOperacao ApresentarResultadoOk()
@@ -38,9 +38,9 @@ internal static class PedidoPresenter
         return new ResultadoOperacao();
     }
 
-    internal static PedidoPagamentoDto ConverterParaPagamentoDto(Pedido pedido, string dadoPagamento)
+    internal static PagamentoDto ConverterParaPagamentoDto(Pedido pedido, string dadoPagamento)
     {
-        return new PedidoPagamentoDto
+        return new PagamentoDto
         {
             Id = pedido.Id,
             ValorTotal = pedido.ValorTotal,

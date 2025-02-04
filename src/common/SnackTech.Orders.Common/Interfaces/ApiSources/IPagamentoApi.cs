@@ -1,10 +1,10 @@
 ﻿using SnackTech.Orders.Common.Dto.Api;
-using SnackTech.Orders.Common.Dto.DataSource;
+using SnackTech.Orders.Common.Dto.ApiSources.Payments;
 
 namespace SnackTech.Orders.Common.Interfaces.ApiSources
 {
     public interface IPagamentoApi
     {
-        Task<ResultadoOperacao<string>> IntegrarPedido(PedidoDto pedido);
+        Task<ResultadoOperacao<PagamentoDto>> CriarPagamento(PedidoPagamentoDto pedido);
     }
 }
