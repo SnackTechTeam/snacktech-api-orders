@@ -40,7 +40,8 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt"), "ControllersFunctionalTests/Features", "PedidosController", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ControllersFunctionalTests/Features", "PedidosController", "  Como usuário do sistema de pedidos\r\n  Quero gerenciar pedidos de forma eficient" +
+                    "e\r\n  Para garantir uma boa experiência do cliente", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,6 +76,15 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 6
+  #line hidden
+#line 7
+    testRunner.Given("que eu tenho um CPF válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -83,36 +93,13 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         [Xunit.SkippableFactAttribute(DisplayName="Iniciar um novo pedido")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
         [Xunit.TraitAttribute("Description", "Iniciar um novo pedido")]
+        [Xunit.TraitAttribute("Category", "Criacao")]
         public void IniciarUmNovoPedido()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Criacao"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iniciar um novo pedido", "    Given que eu tenho um CPF válido\r\n    When eu envio uma solicitação para inic" +
-                    "iar um pedido\r\n    Then eu devo receber um identificador de pedido", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 5
-  this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Atualizar um pedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
-        [Xunit.TraitAttribute("Description", "Atualizar um pedido")]
-        public void AtualizarUmPedido()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Atualizar um pedido", "    Given que eu tenho um pedido existente que não está aguardando pagamento\r\n   " +
-                    " When eu envio uma solicitação para atualizar o pedido\r\n    Then eu devo receber" +
-                    " uma confirmação de sucesso", tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iniciar um novo pedido", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 10
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -123,20 +110,29 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 11
+    testRunner.When("eu envio uma solicitação para iniciar um pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 12
+    testRunner.Then("eu devo receber um identificador de pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Finalizar pedido para pagamento")]
+        [Xunit.SkippableFactAttribute(DisplayName="Atualizar um pedido existente")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
-        [Xunit.TraitAttribute("Description", "Finalizar pedido para pagamento")]
-        public void FinalizarPedidoParaPagamento()
+        [Xunit.TraitAttribute("Description", "Atualizar um pedido existente")]
+        [Xunit.TraitAttribute("Category", "Atualizacao")]
+        public void AtualizarUmPedidoExistente()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Atualizacao"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Finalizar pedido para pagamento", "    Given que eu tenho um pedido existente\r\n    When eu envio uma solicitação par" +
-                    "a finalizar o pedido para pagamento\r\n    Then eu devo receber uma confirmação de" +
-                    " sucesso", tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Atualizar um pedido existente", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 15
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -147,6 +143,54 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 16
+    testRunner.Given("que eu tenho um pedido que não está aguardando pagamento", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 17
+    testRunner.When("eu envio uma solicitação para atualizar o pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 18
+    testRunner.Then("eu devo receber uma confirmação de sucesso", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Finalizar um pedido para pagamento")]
+        [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
+        [Xunit.TraitAttribute("Description", "Finalizar um pedido para pagamento")]
+        [Xunit.TraitAttribute("Category", "Finalizacao")]
+        public void FinalizarUmPedidoParaPagamento()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Finalizacao"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Finalizar um pedido para pagamento", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 21
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 22
+    testRunner.Given("que eu tenho um pedido existente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 23
+    testRunner.When("eu envio uma solicitação para finalizar o pedido para pagamento", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+    testRunner.Then("eu devo receber uma confirmação de sucesso", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -154,13 +198,14 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         [Xunit.SkippableFactAttribute(DisplayName="Listar pedidos aguardando pagamento")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
         [Xunit.TraitAttribute("Description", "Listar pedidos aguardando pagamento")]
+        [Xunit.TraitAttribute("Category", "Listagem")]
         public void ListarPedidosAguardandoPagamento()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Listagem"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Listar pedidos aguardando pagamento", "    When eu envio uma solicitação para listar pedidos aguardando pagamento\r\n    T" +
-                    "hen eu devo receber uma lista de pedidos", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Listar pedidos aguardando pagamento", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 27
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -170,6 +215,15 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 28
+    testRunner.When("eu envio uma solicitação para listar pedidos aguardando pagamento", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 29
+    testRunner.Then("eu devo receber uma lista de pedidos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -177,14 +231,14 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         [Xunit.SkippableFactAttribute(DisplayName="Buscar pedido por identificação")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
         [Xunit.TraitAttribute("Description", "Buscar pedido por identificação")]
+        [Xunit.TraitAttribute("Category", "Consulta")]
         public void BuscarPedidoPorIdentificacao()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Consulta"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Buscar pedido por identificação", "    Given que eu tenho um identificador de pedido válido\r\n    When eu envio uma s" +
-                    "olicitação para buscar o pedido por identificação\r\n    Then eu devo receber os d" +
-                    "etalhes do pedido", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 24
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Buscar pedido por identificação", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 32
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -194,6 +248,18 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 33
+    testRunner.Given("que eu tenho um identificador de pedido válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 34
+    testRunner.When("eu envio uma solicitação para buscar o pedido por identificação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 35
+    testRunner.Then("eu devo receber os detalhes do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -201,60 +267,13 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         [Xunit.SkippableFactAttribute(DisplayName="Buscar último pedido do cliente")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
         [Xunit.TraitAttribute("Description", "Buscar último pedido do cliente")]
+        [Xunit.TraitAttribute("Category", "Consulta")]
         public void BuscarUltimoPedidoDoCliente()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Consulta"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Buscar último pedido do cliente", "    Given que eu tenho um CPF válido\r\n    When eu envio uma solicitação para busc" +
-                    "ar o último pedido do cliente\r\n    Then eu devo receber os detalhes do último pe" +
-                    "dido", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 29
-  this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Listar pedidos ativos")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
-        [Xunit.TraitAttribute("Description", "Listar pedidos ativos")]
-        public void ListarPedidosAtivos()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Listar pedidos ativos", "    When eu envio uma solicitação para listar pedidos ativos\r\n    Then eu devo re" +
-                    "ceber uma lista de pedidos ativos", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 34
-  this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Iniciar preparação de um pedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
-        [Xunit.TraitAttribute("Description", "Iniciar preparação de um pedido")]
-        public void IniciarPreparacaoDeUmPedido()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iniciar preparação de um pedido", "    Given que eu tenho um identificador de pedido válido\r\n    When eu envio uma s" +
-                    "olicitação para iniciar a preparação do pedido\r\n    Then eu devo receber uma con" +
-                    "firmação de sucesso", tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Buscar último pedido do cliente", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 38
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -265,20 +284,29 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 39
+    testRunner.When("eu envio uma solicitação para buscar o último pedido do cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 40
+    testRunner.Then("eu devo receber os detalhes do último pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Concluir preparação de um pedido")]
+        [Xunit.SkippableFactAttribute(DisplayName="Listar pedidos ativos")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
-        [Xunit.TraitAttribute("Description", "Concluir preparação de um pedido")]
-        public void ConcluirPreparacaoDeUmPedido()
+        [Xunit.TraitAttribute("Description", "Listar pedidos ativos")]
+        [Xunit.TraitAttribute("Category", "Listagem")]
+        public void ListarPedidosAtivos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Listagem"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Concluir preparação de um pedido", "    Given que eu tenho um identificador de pedido válido\r\n    When eu envio uma s" +
-                    "olicitação para concluir a preparação do pedido\r\n    Then eu devo receber uma co" +
-                    "nfirmação de sucesso", tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Listar pedidos ativos", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 43
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -289,20 +317,29 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 44
+    testRunner.When("eu envio uma solicitação para listar pedidos ativos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 45
+    testRunner.Then("eu devo receber uma lista de pedidos ativos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Finalizar um pedido")]
+        [Xunit.SkippableFactAttribute(DisplayName="Iniciar preparação de um pedido")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
-        [Xunit.TraitAttribute("Description", "Finalizar um pedido")]
-        public void FinalizarUmPedido()
+        [Xunit.TraitAttribute("Description", "Iniciar preparação de um pedido")]
+        [Xunit.TraitAttribute("Category", "Preparacao")]
+        public void IniciarPreparacaoDeUmPedido()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Preparacao"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Finalizar um pedido", "    Given que eu tenho um identificador de pedido válido\r\n    When eu envio uma s" +
-                    "olicitação para finalizar o pedido\r\n    Then eu devo receber uma confirmação de " +
-                    "sucesso", tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iniciar preparação de um pedido", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 48
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -313,6 +350,90 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 49
+    testRunner.Given("que eu tenho um identificador de pedido válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 50
+    testRunner.When("eu envio uma solicitação para iniciar a preparação do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 51
+    testRunner.Then("eu devo receber uma confirmação de sucesso", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Concluir preparação de um pedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
+        [Xunit.TraitAttribute("Description", "Concluir preparação de um pedido")]
+        [Xunit.TraitAttribute("Category", "Preparacao")]
+        public void ConcluirPreparacaoDeUmPedido()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Preparacao"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Concluir preparação de um pedido", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 54
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 55
+    testRunner.Given("que eu tenho um identificador de pedido válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 56
+    testRunner.When("eu envio uma solicitação para concluir a preparação do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 57
+    testRunner.Then("eu devo receber uma confirmação de sucesso", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Finalizar um pedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "PedidosController")]
+        [Xunit.TraitAttribute("Description", "Finalizar um pedido")]
+        [Xunit.TraitAttribute("Category", "Finalizacao")]
+        public void FinalizarUmPedido()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Finalizacao"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Finalizar um pedido", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 60
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+  this.FeatureBackground();
+#line hidden
+#line 61
+    testRunner.Given("que eu tenho um identificador de pedido válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 62
+    testRunner.When("eu envio uma solicitação para finalizar o pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 63
+    testRunner.Then("eu devo receber uma confirmação de", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

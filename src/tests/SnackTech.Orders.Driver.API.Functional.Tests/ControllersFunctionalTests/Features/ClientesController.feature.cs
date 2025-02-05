@@ -40,7 +40,8 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt"), "ControllersFunctionalTests/Features", "ClientesController", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ControllersFunctionalTests/Features", "ClientesController", "  Como usuário do sistema de clientes\r\n  Quero gerenciar clientes de forma eficie" +
+                    "nte\r\n  Para garantir uma boa experiência", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,14 +84,14 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
         [Xunit.SkippableFactAttribute(DisplayName="Cadastrar um novo cliente")]
         [Xunit.TraitAttribute("FeatureTitle", "ClientesController")]
         [Xunit.TraitAttribute("Description", "Cadastrar um novo cliente")]
+        [Xunit.TraitAttribute("Category", "Criacao")]
         public void CadastrarUmNovoCliente()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Criacao"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar um novo cliente", "    Given que eu tenho os dados de um novo cliente\r\n    When eu envio uma solicit" +
-                    "ação POST para \"/api/clientes\"\r\n    Then o cliente deve ser criado com sucesso\r\n" +
-                    "    And eu devo receber um status code 200", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar um novo cliente", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 7
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -100,45 +101,33 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Obter cliente por CPF")]
-        [Xunit.TraitAttribute("FeatureTitle", "ClientesController")]
-        [Xunit.TraitAttribute("Description", "Obter cliente por CPF")]
-        public void ObterClientePorCPF()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Obter cliente por CPF", "    Given que eu tenho o CPF de um cliente existente\r\n    When eu envio uma solic" +
-                    "itação GET para \"/api/clientes/{cpf}\"\r\n    Then eu devo receber os dados do clie" +
-                    "nte\r\n    And eu devo receber um status code 200", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 8
+    testRunner.Given("que eu tenho os dados de um novo cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 9
+    testRunner.When("eu envio uma solicitação POST para \"/api/clientes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+    testRunner.Then("o cliente deve ser criado com sucesso", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 11
-  this.ScenarioInitialize(scenarioInfo);
+    testRunner.And("eu devo receber um status code 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Obter cliente padrão")]
+        [Xunit.SkippableFactAttribute(DisplayName="Consultar cliente padrão")]
         [Xunit.TraitAttribute("FeatureTitle", "ClientesController")]
-        [Xunit.TraitAttribute("Description", "Obter cliente padrão")]
-        public void ObterClientePadrao()
+        [Xunit.TraitAttribute("Description", "Consultar cliente padrão")]
+        [Xunit.TraitAttribute("Category", "Consulta")]
+        public void ConsultarClientePadrao()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Consulta"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Obter cliente padrão", "    Given que eu quero obter o cliente padrão\r\n    When eu envio uma solicitação " +
-                    "GET para \"/api/clientes/cliente-padrao\"\r\n    Then eu devo receber os dados do cl" +
-                    "iente padrão\r\n    And eu devo receber um status code 200", tagsOfScenario, argumentsOfScenario, featureTags);
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Consultar cliente padrão", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 14
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -148,6 +137,54 @@ namespace SnackTech.Orders.Driver.API.Functional.Tests.ControllersFunctionalTest
             else
             {
                 this.ScenarioStart();
+#line 15
+    testRunner.Given("que eu quero obter o cliente padrão", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+    testRunner.When("eu envio uma solicitação GET para \"/api/clientes/cliente-padrao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+    testRunner.Then("eu devo receber os dados do cliente padrão", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 18
+    testRunner.And("eu devo receber um status code 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Consultar cliente por CPF")]
+        [Xunit.TraitAttribute("FeatureTitle", "ClientesController")]
+        [Xunit.TraitAttribute("Description", "Consultar cliente por CPF")]
+        [Xunit.TraitAttribute("Category", "Consulta")]
+        public void ConsultarClientePorCPF()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Consulta"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Consultar cliente por CPF", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 21
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 22
+    testRunner.Given("que eu tenho o CPF de um cliente existente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 23
+    testRunner.When("eu envio uma solicitação GET para \"/api/clientes/{cpf}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+    testRunner.Then("eu devo receber os dados do cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 25
+    testRunner.And("eu devo receber um status code 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
