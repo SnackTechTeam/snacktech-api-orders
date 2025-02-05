@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED6C3296-6F49-455F-8098-81E3AAA9DB52}"
 	ProjectSection(SolutionItems) = preProject
 		src\.gitlab-ci.yml = src\.gitlab-ci.yml
+		.gitlab-ci.yml = .gitlab-ci.yml
 	EndProjectSection
 EndProject
 Global
