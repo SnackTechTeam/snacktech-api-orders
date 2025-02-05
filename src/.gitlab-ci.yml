@@ -1,0 +1,15 @@
+stages:
+  - test
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+test_bdd:
+  stage: test
+  image: mcr.microsoft.com/dotnet/core/sdk:5.0  # Use a imagem que corresponda à sua versão do .NET
+  script:
+    - apt-get update && apt-get install -y libgconf-2-4  # Caso precise de dependências adicionais
+    - cd src  # Acessa o diretório onde o projeto está localizado
+    - dotnet restore src/tests/SnackTech.Orders.Driver.API.Functional.Tests/SnackTech.Orders.Driver.API.Functional.Tests.csproj  # Restaura as dependências do projeto de testes
+    - dotnet build src/tests/SnackTech.Orders.Driver.API.Functional.Tests/SnackTech.Orders.Driver.API.Functional.Tests.csproj  # Compila o projeto de testes
+    - dotnet test src/tests/SnackTech.Orders.Driver.API.Functional.Tests/SnackTech.Orders.Driver.API.Functional.Tests.csproj --logger "trx"  # Executa os testes com SpecFlow
