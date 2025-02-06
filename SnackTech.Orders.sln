@@ -25,6 +25,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.API
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "src\docker-compose.dcproj", "{FB30F8AE-F6C9-4BD2-848B-379B5B884726}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9E078348-E1B5-4568-BD35-4EEB47B9917C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Core.Tests", "src\tests\SnackTech.Core.Tests\SnackTech.Orders.Core.Tests.csproj", "{AB3AFFC2-DA74-40DC-B8CC-42D3C06FC500}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.API.Tests", "src\tests\SnackTech.Driver.API.Tests\SnackTech.Orders.Driver.API.Tests.csproj", "{42234703-F3EB-4B67-A801-DAC18FD55ACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.Database.Tests", "src\tests\SnackTech.Driver.DataBase.Tests\SnackTech.Orders.Driver.Database.Tests.csproj", "{655C5F75-9908-42C8-8716-2AF350D9CD34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +67,18 @@ Global
 		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB30F8AE-F6C9-4BD2-848B-379B5B884726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3AFFC2-DA74-40DC-B8CC-42D3C06FC500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3AFFC2-DA74-40DC-B8CC-42D3C06FC500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3AFFC2-DA74-40DC-B8CC-42D3C06FC500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3AFFC2-DA74-40DC-B8CC-42D3C06FC500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42234703-F3EB-4B67-A801-DAC18FD55ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42234703-F3EB-4B67-A801-DAC18FD55ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42234703-F3EB-4B67-A801-DAC18FD55ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42234703-F3EB-4B67-A801-DAC18FD55ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655C5F75-9908-42C8-8716-2AF350D9CD34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655C5F75-9908-42C8-8716-2AF350D9CD34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655C5F75-9908-42C8-8716-2AF350D9CD34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655C5F75-9908-42C8-8716-2AF350D9CD34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,5 +90,8 @@ Global
 		{78D40312-E1EF-4215-9D92-2390A04EE6EF} = {15DB9E84-21DC-4620-8F42-1793135DA039}
 		{77342771-882E-4917-832C-2BCBE7DF27D1} = {15DB9E84-21DC-4620-8F42-1793135DA039}
 		{48FF1333-2623-4432-A3C8-AD9487F086EF} = {4D96D5FE-C997-49B0-B39A-1D518421A69C}
+		{AB3AFFC2-DA74-40DC-B8CC-42D3C06FC500} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
+		{42234703-F3EB-4B67-A801-DAC18FD55ACB} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
+		{655C5F75-9908-42C8-8716-2AF350D9CD34} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
 	EndGlobalSection
 EndGlobal

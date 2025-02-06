@@ -44,6 +44,11 @@ internal class Pedido
 
     internal void AtualizarPedidoAposPagamento()
     {
+        if (Status != StatusPedidoValido.AguardandoPagamento)
+        {
+            throw new ArgumentException("O pedido deve estar com o status AguardandoPagamento.");
+        }
+
         Status = StatusPedidoValido.Recebido;
     }
 
