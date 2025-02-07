@@ -81,7 +81,7 @@ namespace SnackTech.Orders.Core.Tests.Domain.Entities
 
             //Act and Assert
             var ex = Assert.Throws<ArgumentException>(() => pedido.FecharPedidoParaPagamento());
-            Assert.Equal("O c·lculo do Valor total do pedido est· resultando em um valor menor ou igual a zero.", ex.Message);
+            Assert.Equal("O c√°lculo do Valor total do pedido est√° resultando em um valor menor ou igual a zero.", ex.Message);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace SnackTech.Orders.Core.Tests.Domain.Entities
 
             //Act and Assert
             var ex = Assert.Throws<ArgumentException>(() => pedido.FecharPedidoParaPagamento());
-            Assert.Equal("Pedido est· com status diferente de Iniciado, n„o ser· possÌvel movÍ-lo para aguardar pagamento", ex.Message);
+            Assert.Equal("Pedido est√° com status diferente de Iniciado, n√£o ser√° poss√≠vel mov√™-lo para aguardar pagamento", ex.Message);
         }
 
         [Fact]

@@ -37,6 +37,8 @@ namespace SnackTech.Orders.Core.Tests.Domain.Util
         {
             //not throws
             CpfValidator.AgainstInvalidCpf(cpf);
+
+            Assert.True(true);
         }
     }
 }
