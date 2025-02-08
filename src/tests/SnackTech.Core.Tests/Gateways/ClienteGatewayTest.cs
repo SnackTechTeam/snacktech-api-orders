@@ -221,7 +221,7 @@ namespace SnackTech.Orders.Core.Tests.Gateways
             var clienteDto = new ClienteDto { Id = Guid.NewGuid(), Nome = "nome", Email = "email@email.com", Cpf = "00000000191" };
 
             // Act
-            var cliente = ClienteGateway.converterParaEntidade(clienteDto);
+            var cliente = ClienteGateway.ConverterParaEntidade(clienteDto);
 
             // Assert
             cliente.Id.Valor.Should().Be(clienteDto.Id);

@@ -2,19 +2,20 @@ using SnackTech.Orders.Common.Dto.DataSource;
 using SnackTech.Orders.Common.Interfaces.DataSources;
 using SnackTech.Orders.Core.Domain.Entities;
 using SnackTech.Orders.Core.Domain.Types;
+using SnackTech.Orders.Core.Interfaces;
 
 namespace SnackTech.Orders.Core.Gateways;
 
-public class PedidoGateway(IPedidoDataSource dataSource)
+internal class PedidoGateway(IPedidoDataSource dataSource) : IPedidoGateway
 {
-    internal async Task<bool> CadastrarNovoPedido(Pedido entidade)
+    public async Task<bool> CadastrarNovoPedido(Pedido entidade)
     {
         var pedidoDto = ConverterParaDto(entidade);
 
         return await dataSource.InserirPedidoAsync(pedidoDto);
     }
 
-    internal async Task<Pedido?> PesquisarPorIdentificacao(GuidValido identificacao)
+    public async Task<Pedido?> PesquisarPorIdentificacao(GuidValido identificacao)
     {
         var pedidoDto = await dataSource.PesquisarPorIdentificacaoAsync(identificacao);
 
@@ -24,22 +25,21 @@ public class PedidoGateway(IPedidoDataSource dataSource)
         return ConverterParaEntidade(pedidoDto);
     }
 
-
-    internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorCliente(GuidValido clienteId)
+    public async Task<IEnumerable<Pedido>> PesquisarPedidosPorCliente(GuidValido clienteId)
     {
         var pedidosDto = await dataSource.PesquisarPedidosPorClienteIdAsync(clienteId);
 
         return pedidosDto.Select(ConverterParaEntidade);
     }
 
-    internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido status)
+    public async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido status)
     {
         var pedidosDto = await dataSource.PesquisarPedidosPorStatusAsync([status.Valor]);
 
         return pedidosDto.Select(ConverterParaEntidade);
     }
 
-    internal async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido[] status)
+    public async Task<IEnumerable<Pedido>> PesquisarPedidosPorStatus(StatusPedidoValido[] status)
     {
         var arrayStatus = status.Select(s => s.Valor).ToArray();
         var pedidosDto = await dataSource.PesquisarPedidosPorStatusAsync(arrayStatus);
@@ -47,21 +47,21 @@ public class PedidoGateway(IPedidoDataSource dataSource)
         return pedidosDto.Select(ConverterParaEntidade);
     }
 
-    internal async Task<bool> AtualizarStatusPedido(Pedido pedido)
+    public async Task<bool> AtualizarStatusPedido(Pedido pedido)
     {
         var pedidoDto = ConverterParaDto(pedido);
 
         return await dataSource.AtualizarStatusPedidoAsync(pedidoDto);
     }
 
-    internal async Task<bool> AtualizarItensDoPedido(Pedido pedido)
+    public async Task<bool> AtualizarItensDoPedido(Pedido pedido)
     {
         var pedidoDto = ConverterParaDto(pedido);
 
         return await dataSource.AlterarItensDoPedidoAsync(pedidoDto);
     }
 
-    internal static PedidoDto ConverterParaDto(Pedido pedido)
+    public static PedidoDto ConverterParaDto(Pedido pedido)
     {
         return new PedidoDto
         {
@@ -73,7 +73,7 @@ public class PedidoGateway(IPedidoDataSource dataSource)
         };
     }
 
-    internal static PedidoItemDto ConverterItemParaDto(PedidoItem pedidoItem)
+    public static PedidoItemDto ConverterItemParaDto(PedidoItem pedidoItem)
     {
         return new PedidoItemDto
         {
@@ -86,18 +86,18 @@ public class PedidoGateway(IPedidoDataSource dataSource)
         };
     }
 
-    internal static Pedido ConverterParaEntidade(PedidoDto pedidoDto)
+    public static Pedido ConverterParaEntidade(PedidoDto pedidoDto)
     {
         return new Pedido(
             pedidoDto.Id,
             pedidoDto.DataCriacao,
             pedidoDto.Status,
-            ClienteGateway.converterParaEntidade(pedidoDto.Cliente),
+            ClienteGateway.ConverterParaEntidade(pedidoDto.Cliente),
             pedidoDto.Itens.Select(ConverterItemParaEntidade).ToList()
         );
     }
 
-    internal static PedidoItem ConverterItemParaEntidade(PedidoItemDto pedidoItemDto)
+    public static PedidoItem ConverterItemParaEntidade(PedidoItemDto pedidoItemDto)
     {
         return new PedidoItem(
             pedidoItemDto.Id,

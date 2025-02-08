@@ -2,13 +2,14 @@ using SnackTech.Orders.Common.Dto.Api;
 using SnackTech.Orders.Core.Domain.Entities;
 using SnackTech.Orders.Core.Domain.Types;
 using SnackTech.Orders.Core.Gateways;
+using SnackTech.Orders.Core.Interfaces;
 using SnackTech.Orders.Core.Presenters;
 
 namespace SnackTech.Orders.Core.UseCases;
 
 internal static class PedidoUseCase
 {
-    internal static async Task<ResultadoOperacao<Guid>> IniciarPedido(string? cpfCliente, PedidoGateway pedidoGateway, ClienteGateway clienteGateway)
+    internal static async Task<ResultadoOperacao<Guid>> IniciarPedido(string? cpfCliente, IPedidoGateway pedidoGateway, IClienteGateway clienteGateway)
     {
         try
         {
@@ -34,7 +35,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarPorIdenticacao(string identificacao, PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarPorIdenticacao(string identificacao, IPedidoGateway pedidoGateway)
     {
         try
         {
@@ -52,7 +53,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string cpfCliente, PedidoGateway pedidoGateway, ClienteGateway clienteGateway)
+    internal static async Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string? cpfCliente, IPedidoGateway pedidoGateway, IClienteGateway clienteGateway)
     {
         try
         {
@@ -60,7 +61,7 @@ internal static class PedidoUseCase
             var cliente = await clienteGateway.ProcurarClientePorCpf(cpf);
             if (cliente is null)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível iniciar um novo pedido para o cliente com CPF '{cpf}'.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não foi possível localizar o cliente com CPF '{cpf}'.");
             }
 
             var ultimosPedidos = await pedidoGateway.PesquisarPedidosPorCliente(cliente.Id);
@@ -78,7 +79,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosParaPagamento(PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosParaPagamento(IPedidoGateway pedidoGateway)
     {
         try
         {
@@ -94,7 +95,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<PagamentoDto>> FinalizarPedidoParaPagamento(string identificacao, PedidoGateway pedidoGateway, PagamentoGateway? pagamentoGateway)
+    internal static async Task<ResultadoOperacao<PagamentoDto>> FinalizarPedidoParaPagamento(string identificacao, IPedidoGateway pedidoGateway, IPagamentoGateway? pagamentoGateway)
     {
         try
         {
@@ -143,7 +144,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<PedidoRetornoDto>> AtualizarItensPedido(PedidoAtualizacaoDto pedidoAtualizado, PedidoGateway pedidoGateway, ProdutoGateway produtoGateway)
+    internal static async Task<ResultadoOperacao<PedidoRetornoDto>> AtualizarItensPedido(PedidoAtualizacaoDto pedidoAtualizado, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway)
     {
         try
         {
@@ -162,7 +163,7 @@ internal static class PedidoUseCase
 
             if (itensNovosComIds.Count > 0)
             {
-                GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não é possivel atualizar itens que não existem no pedido. Por favor, remove a identificação dos itens novos para que eles sejam cadastrados corretamente.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PedidoRetornoDto>($"Não é possivel atualizar itens que não existem no pedido. Por favor, remove a identificação dos itens novos para que eles sejam cadastrados corretamente.");
             }
 
             //remover itens do pedido que estejam ausentes no pedido atualizado
@@ -188,7 +189,7 @@ internal static class PedidoUseCase
         }
     }
 
-    private static async Task<List<PedidoItem>> ValidarItensPedido(IEnumerable<PedidoItemAtualizacaoDto> itens, ProdutoGateway produtoGateway)
+    private static async Task<List<PedidoItem>> ValidarItensPedido(IEnumerable<PedidoItemAtualizacaoDto> itens, IProdutoGateway produtoGateway)
     {
         var itensValidados = new List<PedidoItem>();
 

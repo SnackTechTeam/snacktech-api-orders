@@ -2,17 +2,18 @@
 using SnackTech.Orders.Common.Dto.ApiSources.Payments;
 using SnackTech.Orders.Common.Interfaces.ApiSources;
 using SnackTech.Orders.Core.Domain.Entities;
+using SnackTech.Orders.Core.Interfaces;
 
 namespace SnackTech.Orders.Core.Gateways
 {
-    public class PagamentoGateway(IPagamentoApi _pagamentoApi)
+    internal class PagamentoGateway(IPagamentoApi _pagamentoApi) : IPagamentoGateway
     {
-        internal async Task<ResultadoOperacao<PagamentoDto>> CriarPagamentoAsync(Pedido pedido)
+        public async Task<ResultadoOperacao<PagamentoDto>> CriarPagamentoAsync(Pedido pedido)
         {
             return await _pagamentoApi.CriarPagamento(ConverterParaDto(pedido));
         }
 
-        internal static PedidoPagamentoDto ConverterParaDto(Pedido pedido)
+        public static PedidoPagamentoDto ConverterParaDto(Pedido pedido)
         {
             return new PedidoPagamentoDto
             {
@@ -22,7 +23,7 @@ namespace SnackTech.Orders.Core.Gateways
             };
         }
 
-        internal static ClientePagamentoDto ConverterClienteParaDto(Cliente cliente)
+        public static ClientePagamentoDto ConverterClienteParaDto(Cliente cliente)
         {
             return new()
             {
@@ -32,7 +33,7 @@ namespace SnackTech.Orders.Core.Gateways
             };
         }
 
-        internal static PedidoItemPagamentoDto ConverterItemParaDto(PedidoItem pedidoItem)
+        public static PedidoItemPagamentoDto ConverterItemParaDto(PedidoItem pedidoItem)
         {
             return new()
             {

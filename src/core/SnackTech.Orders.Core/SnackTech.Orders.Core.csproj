@@ -10,7 +10,6 @@
     <Folder Include="Domain\Entities\" />
     <Folder Include="Domain\Util\" />
     <Folder Include="Domain\Types\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Controllers\" />
     <Folder Include="Presenters\" />
     <Folder Include="UseCases\" />
@@ -26,6 +25,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="SnackTech.Orders.Core.Tests" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
 	</ItemGroup>
 
 </Project>
