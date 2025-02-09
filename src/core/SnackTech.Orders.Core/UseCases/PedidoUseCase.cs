@@ -210,7 +210,7 @@ internal static class PedidoUseCase
         return itensValidados;
     }
 
-    internal static async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosAtivos(PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosAtivos(IPedidoGateway pedidoGateway)
     {
         try
         {
@@ -225,7 +225,7 @@ internal static class PedidoUseCase
                 .OrderByDescending(p => (int)p.Status)
                 .ThenByDescending(p => p.DataCriacao.Valor)
                 .ToList();
-            var retorno = PedidoPresenter.ApresentarResultadoPedido(pedidos);
+            var retorno = PedidoPresenter.ApresentarResultadoPedido(pedidosOrdenados);
 
             return retorno;
         }
@@ -235,7 +235,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao> IniciarPreparacaoPedido(string identificacao, PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao> IniciarPreparacaoPedido(string identificacao, IPedidoGateway pedidoGateway)
     {
         try
         {
@@ -252,7 +252,7 @@ internal static class PedidoUseCase
 
             if (!foiAtualizado)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível iniciar o preparo o pedido com identificação {identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível iniciar o preparo do pedido com identificação {identificacao}.");
             }
 
             return PedidoPresenter.ApresentarResultadoOk();
@@ -267,7 +267,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao> ConcluirPreparacaoPedido(string identificacao, PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao> ConcluirPreparacaoPedido(string identificacao, IPedidoGateway pedidoGateway)
     {
         try
         {
@@ -284,7 +284,7 @@ internal static class PedidoUseCase
 
             if (!foiAtualizado)
             {
-                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível concluir o preparo o pedido com identificação {identificacao}.");
+                return GeralPresenter.ApresentarResultadoErroLogico<PagamentoDto>($"Não foi possível concluir o preparo do pedido com identificação {identificacao}.");
             }
 
             return PedidoPresenter.ApresentarResultadoOk();
@@ -299,7 +299,7 @@ internal static class PedidoUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao> FinalizarPedido(string identificacao, PedidoGateway pedidoGateway)
+    internal static async Task<ResultadoOperacao> FinalizarPedido(string identificacao, IPedidoGateway pedidoGateway)
     {
         try
         {

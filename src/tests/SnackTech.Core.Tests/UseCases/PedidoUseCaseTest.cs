@@ -660,7 +660,7 @@ namespace SnackTech.Orders.Core.Tests.UseCases
         }
 
         [Fact]
-        public async Task AtualizarItensPedido_DeveRetornarErroInterno_QuandoExcecaoForLancada()
+        public async Task AtualizarItensPedido_DeveRetornarErroInterno_QuandoOcorrerExcecao()
         {
             // Arrange
             var pedidoAtualizado = new PedidoAtualizacaoDto { IdentificacaoPedido = Guid.NewGuid().ToString() };
@@ -674,6 +674,355 @@ namespace SnackTech.Orders.Core.Tests.UseCases
             // Assert
             resultado.Sucesso.Should().BeFalse();
             resultado.Dados.Should().BeNull();
+            resultado.Mensagem.Should().Contain("Erro inesperado");
+        }
+
+        #endregion
+
+        #region ListarPedidosAtivos
+
+        [Fact]
+        public async Task ListarPedidosAtivos_DeveRetornarPedidosOrdenadosCorretamente()
+        {
+            // Arrange
+            var cliente = CriarClienteValido();
+            var pedidos = new List<Pedido>
+            {
+                new(Guid.NewGuid(), DateTime.Now.AddMinutes(-20), StatusPedidoValido.EmPreparacao, cliente),
+                new(Guid.NewGuid(), DateTime.Now.AddMinutes(-30), StatusPedidoValido.Recebido, cliente),
+                new(Guid.NewGuid(), DateTime.Now.AddMinutes(-10), StatusPedidoValido.Pronto, cliente)
+            };
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPedidosPorStatus(It.IsAny<StatusPedidoValido[]>()))
+                .ReturnsAsync(pedidos);
+
+            // Act
+            var resultado = await PedidoUseCase.ListarPedidosAtivos(_pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeTrue();
+            resultado.Dados.Should().HaveCount(3);
+            resultado.Dados.Select(p => p.Status).Should().ContainInOrder(
+                StatusPedidoValido.Pronto, StatusPedidoValido.EmPreparacao, StatusPedidoValido.Recebido
+            );
+        }
+
+        [Fact]
+        public async Task ListarPedidosAtivos_DeveRetornarErroInterno_QuandoOcorrerExcecao()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPedidosPorStatus(It.IsAny<StatusPedidoValido[]>()))
+                .ThrowsAsync(new Exception("Erro inesperado"));
+
+            // Act
+            var resultado = await PedidoUseCase.ListarPedidosAtivos(_pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Dados.Should().BeNull();
+            resultado.Mensagem.Should().Contain("Erro inesperado");
+        }
+
+        #endregion
+
+        #region IniciarPreparacaoPedido
+
+        [Fact]
+        public async Task IniciarPreparacaoPedido_DeveRetornarErro_QuandoPedidoNaoForEncontrado()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync((Pedido?)null);
+
+            // Act
+            var resultado = await PedidoUseCase.IniciarPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Pedido não localizado");
+        }
+
+        [Fact]
+        public async Task IniciarPreparacaoPedido_DeveIniciarPreparacaoPedido_QuandoPedidoEncontrado()
+        {
+            // Arrange
+            var pedido = CriarPedido(
+                CriarClienteValido(),
+                [
+                    CriarPedidoItem(
+                        CriarProdutoValido())
+                ],
+                StatusPedidoValido.Recebido);
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync(pedido);
+
+            _pedidoGatewayMock.Setup(p => p.AtualizarStatusPedido(pedido))
+                .ReturnsAsync(true);
+
+            // Act
+            var resultado = await PedidoUseCase.IniciarPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeTrue();
+            pedido.Status.Valor.Should().Be(StatusPedidoValido.EmPreparacao);
+        }
+
+        [Fact]
+        public async Task IniciarPreparacaoPedido_DeveRetornarErro_QuandoAtualizacaoDeStatusFalhar()
+        {
+            // Arrange
+            var pedido = CriarPedido(
+                CriarClienteValido(),
+                [
+                    CriarPedidoItem(
+                        CriarProdutoValido())
+                ],
+                StatusPedidoValido.Recebido);
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync(pedido);
+
+            _pedidoGatewayMock.Setup(p => p.AtualizarStatusPedido(pedido))
+                .ReturnsAsync(false);
+
+            // Act
+            var resultado = await PedidoUseCase.IniciarPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Não foi possível iniciar o preparo do pedido");
+        }
+
+        [Fact]
+        public async Task IniciarPreparacaoPedido_DeveRetornarErroInterno_QuandoOcorrerExcecaoDeArgumento()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ThrowsAsync(new ArgumentException("Argumento inválido"));
+
+            // Act
+            var resultado = await PedidoUseCase.IniciarPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Argumento inválido");
+        }
+
+        [Fact]
+        public async Task IniciarPreparacaoPedido_DeveRetornarErroInterno_QuandoOcorrerExcecao()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ThrowsAsync(new Exception("Erro inesperado"));
+
+            // Act
+            var resultado = await PedidoUseCase.IniciarPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Erro inesperado");
+        }
+
+        #endregion
+
+        #region ConcluirPreparacaoPedido
+
+        [Fact]
+        public async Task ConcluirPreparacaoPedido_DeveRetornarErro_QuandoPedidoNaoForEncontrado()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync((Pedido?)null);
+
+            // Act
+            var resultado = await PedidoUseCase.ConcluirPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Pedido não localizado");
+        }
+
+        [Fact]
+        public async Task ConcluirPreparacaoPedido_DeveConcluirPreparacaoPedido_QuandoPedidoEncontrado()
+        {
+            // Arrange
+            var pedido = CriarPedido(
+                CriarClienteValido(),
+                [
+                    CriarPedidoItem(
+                        CriarProdutoValido())
+                ],
+                StatusPedidoValido.EmPreparacao);
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync(pedido);
+
+            _pedidoGatewayMock.Setup(p => p.AtualizarStatusPedido(pedido))
+                .ReturnsAsync(true);
+
+            // Act
+            var resultado = await PedidoUseCase.ConcluirPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeTrue();
+            pedido.Status.Valor.Should().Be(StatusPedidoValido.Pronto);
+        }
+
+        [Fact]
+        public async Task ConcluirPreparacaoPedido_DeveRetornarErro_QuandoAtualizacaoDeStatusFalhar()
+        {
+            // Arrange
+            var pedido = CriarPedido(
+                CriarClienteValido(),
+                [
+                    CriarPedidoItem(
+                        CriarProdutoValido())
+                ],
+                StatusPedidoValido.EmPreparacao);
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync(pedido);
+
+            _pedidoGatewayMock.Setup(p => p.AtualizarStatusPedido(pedido))
+                .ReturnsAsync(false);
+
+            // Act
+            var resultado = await PedidoUseCase.ConcluirPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Não foi possível concluir o preparo do pedido");
+        }
+
+        [Fact]
+        public async Task ConcluirPreparacaoPedido_DeveRetornarErroInterno_QuandoOcorrerExcecaoDeArgumento()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ThrowsAsync(new ArgumentException("Argumento inválido"));
+
+            // Act
+            var resultado = await PedidoUseCase.ConcluirPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Argumento inválido");
+        }
+
+        [Fact]
+        public async Task ConcluirPreparacaoPedido_DeveRetornarErroInterno_QuandoOcorrerExcecao()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ThrowsAsync(new Exception("Erro inesperado"));
+
+            // Act
+            var resultado = await PedidoUseCase.ConcluirPreparacaoPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Erro inesperado");
+        }
+
+        #endregion
+
+        #region FinalizarPedido
+
+        [Fact]
+        public async Task FinalizarPedido_DeveRetornarErro_QuandoPedidoNaoForEncontrado()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync((Pedido?)null);
+
+            // Act
+            var resultado = await PedidoUseCase.FinalizarPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Pedido não localizado");
+        }
+
+        [Fact]
+        public async Task FinalizarPedido_DeveFinalizarPedido_QuandoPedidoEncontrado()
+        {
+            // Arrange
+            var pedido = CriarPedido(
+                CriarClienteValido(),
+                [
+                    CriarPedidoItem(
+                        CriarProdutoValido())
+                ],
+                StatusPedidoValido.Pronto);
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync(pedido);
+
+            _pedidoGatewayMock.Setup(p => p.AtualizarStatusPedido(pedido))
+                .ReturnsAsync(true);
+
+            // Act
+            var resultado = await PedidoUseCase.FinalizarPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeTrue();
+            pedido.Status.Valor.Should().Be(StatusPedidoValido.Finalizado);
+        }
+
+        [Fact]
+        public async Task FinalizarPedido_DeveRetornarErro_QuandoAtualizacaoDeStatusFalhar()
+        {
+            // Arrange
+            var pedido = CriarPedido(
+                CriarClienteValido(),
+                [
+                    CriarPedidoItem(
+                        CriarProdutoValido())
+                ],
+                StatusPedidoValido.Pronto);
+
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ReturnsAsync(pedido);
+
+            _pedidoGatewayMock.Setup(p => p.AtualizarStatusPedido(pedido))
+                .ReturnsAsync(false);
+
+            // Act
+            var resultado = await PedidoUseCase.FinalizarPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Não foi possível finalizar o pedido");
+        }
+
+        [Fact]
+        public async Task FinalizarPedido_DeveRetornarErroInterno_QuandoOcorrerExcecaoDeArgumento()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ThrowsAsync(new ArgumentException("Argumento inválido"));
+
+            // Act
+            var resultado = await PedidoUseCase.FinalizarPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
+            resultado.Mensagem.Should().Contain("Argumento inválido");
+        }
+
+        [Fact]
+        public async Task FinalizarPedido_DeveRetornarErroInterno_QuandoOcorrerExcecao()
+        {
+            // Arrange
+            _pedidoGatewayMock.Setup(p => p.PesquisarPorIdentificacao(It.IsAny<GuidValido>()))
+                .ThrowsAsync(new Exception("Erro inesperado"));
+
+            // Act
+            var resultado = await PedidoUseCase.FinalizarPedido(Guid.NewGuid().ToString(), _pedidoGatewayMock.Object);
+
+            // Assert
+            resultado.Sucesso.Should().BeFalse();
             resultado.Mensagem.Should().Contain("Erro inesperado");
         }
 

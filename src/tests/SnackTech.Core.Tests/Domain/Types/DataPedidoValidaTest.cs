@@ -17,13 +17,14 @@ public class DataPedidoValidaTest
         Assert.Equal("Não é permitido criar pedidos com data anterior a 01/01/2024.", exception.Message);
     }
 
+    [Fact]
     public void DataPedidoValida_NaoPodeSerDataFutura()
     {
         var valor = DateTime.Now.AddDays(1);
 
         var exception = Assert.Throws<ArgumentException>(() => new DataPedidoValida(valor));
 
-        Assert.Equal("Não é permitido criar pedidos com data posterior a data atual.", exception.Message);
+        Assert.Equal("Não é permitido criar pedidos com data/horário futuro.", exception.Message);
     }
 
     [Fact]
