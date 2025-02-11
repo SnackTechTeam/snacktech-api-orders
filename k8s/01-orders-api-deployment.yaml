@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-orders-deployment
+spec:
+  selector:
+    matchLabels:
+      app: api-orders-pod
+  template:
+    metadata:
+      labels:
+        app: api-orders-pod
+    spec:
+      containers:
+        - name: api-orders-container
+          image: # valor será incluido no pipeline
+          envFrom: # Use envFrom to load from ConfigMap and Secret
+            - secretRef:
+                name: api-orders-secret
+
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
