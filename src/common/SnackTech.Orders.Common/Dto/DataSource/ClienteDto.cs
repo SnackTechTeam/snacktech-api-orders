@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SnackTech.Orders.Common.Dto.DataSource;
 
+[ExcludeFromCodeCoverage]
 public class ClienteDto
 {
     public Guid Id { get; set; }

@@ -16,15 +16,8 @@ namespace SnackTech.Orders.Common.Http.Refit
                 if (response.IsSuccessStatusCode)
                 {
                     T? data = response.Content;
-                    
-                    if (data is not null)
-                    {
-                        return new ResultadoOperacao<T>(data);
-                    }
-                    else
-                    {
-                        return new ResultadoOperacao<T>("", true);
-                    }
+
+                    return new ResultadoOperacao<T>(data);                    
                 }
                 else
                 {
@@ -34,7 +27,7 @@ namespace SnackTech.Orders.Common.Http.Refit
                         message = response.Error.Content;
                     }
 
-                    return new ResultadoOperacao<T>(message, false);
+                    return new ResultadoOperacao<T>(message, true);
                 }
             }
             catch (Exception ex)

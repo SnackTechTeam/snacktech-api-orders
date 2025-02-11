@@ -33,9 +33,9 @@ namespace SnackTech.Orders.Common.Dto.Api
 
     public class ResultadoOperacao<T> : ResultadoOperacao
     {
-        public T Dados { get; protected set; }
+        public T? Dados { get; protected set; }
 
-        public ResultadoOperacao(T dados)
+        public ResultadoOperacao(T? dados)
             : base()
         {
             Dados = dados;
@@ -58,6 +58,6 @@ namespace SnackTech.Orders.Common.Dto.Api
             Dados = default!;
         }
 
-        public T RecuperarDados() => Dados;
+        public T? RecuperarDados() => Dados;
     }
 }

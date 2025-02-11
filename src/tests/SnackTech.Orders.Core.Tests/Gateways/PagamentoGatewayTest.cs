@@ -6,7 +6,6 @@ using SnackTech.Orders.Common.Interfaces.ApiSources;
 using SnackTech.Orders.Core.Domain.Entities;
 using SnackTech.Orders.Core.Domain.Types;
 using SnackTech.Orders.Core.Gateways;
-using Telerik.JustMock;
 
 namespace SnackTech.Orders.Core.Tests.Gateways
 {
