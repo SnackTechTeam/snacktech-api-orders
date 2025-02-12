@@ -17,9 +17,9 @@ namespace SnackTech.Orders.Driver.Payments
             services.AddRefitClient<IPagamentoHttpClient>()
                 .ConfigureHttpClient((sp, client) =>
                 {
-                    // Obtém as configurações injetadas pelo Options
+                    // ObtÃ©m as configuraï¿½ï¿½es injetadas pelo Options
                     var settings = sp.GetRequiredService<IOptions<PagamentoApiSettings>>().Value;
-                    client.BaseAddress = new Uri(settings.UrlBase);
+                    client.BaseAddress = new Uri(settings.UrlBase + settings.EndpointOperacao);
                 });
 
             services.AddTransient<IPagamentoApi, PagamentoApi>();

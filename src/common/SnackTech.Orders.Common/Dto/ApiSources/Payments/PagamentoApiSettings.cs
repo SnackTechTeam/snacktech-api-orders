@@ -7,5 +7,6 @@ namespace SnackTech.Orders.Common.Dto.ApiSources.Payments
     {
         public bool EnableIntegration { get; set; }
         public string UrlBase { get; set; } = null!;
+        public string EndpointOperacao { get; set; } = null!;
     }
 }

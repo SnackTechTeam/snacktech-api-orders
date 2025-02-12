@@ -145,6 +145,7 @@ jobs:
         env:
           PRODUTO_API_URL: "http://api-products-service:8080/api"
           PAGAMENTO_API_URL: "http://api-payment-service:8080/api"
+          PAGAMENTO_API_ENDPOINT_OPERACAO: "/Pagamentos/mock"
         run: |
           CONFIGMAP_NAME="api-orders-configmap"
       
@@ -156,7 +157,8 @@ jobs:
             --from-literal=ProdutoApiSettings__EnableIntegration="true" \
             --from-literal=ProdutoApiSettings__UrlBase="$PRODUTO_API_URL" \
             --from-literal=PagamentoApiSettings__EnableIntegration="true" \
-            --from-literal=PagamentoApiSettings__UrlBase="$PAGAMENTO_API_URL"
+            --from-literal=PagamentoApiSettings__UrlBase="$PAGAMENTO_API_URL" \
+            --from-literal=PagamentoApiSettings__EndpointOperacao="$PAGAMENTO_API_ENDPOINT_OPERACAO"
           
       - name: Replace ECR image string value
         env:
