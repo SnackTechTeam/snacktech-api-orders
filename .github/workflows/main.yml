@@ -127,21 +127,37 @@ jobs:
       
       - name: Create/Update Secrets
         env:
-          ConnectionStrings__DefaultConnection: Server=${{ secrets.DB_INSTANCE_PRODUTOS }},${{ vars.DB_PORT }};Database=SnackTechProductsDb;User=${{ secrets.DB_UID_PRODUTOS }};Password=${{ secrets.DB_PASSWORD_PRODUTOS }};TrustServerCertificate=True
+          DB_INSTANCE_PRODUTOS: ${{ secrets.DB_INSTANCE_PRODUTOS }}
+          DB_PORT: ${{ vars.DB_PORT }}
+          DB_UID_PRODUTOS: ${{ secrets.DB_UID_PRODUTOS }}
+          DB_PASSWORD_PRODUTOS: ${{ secrets.DB_PASSWORD_PRODUTOS }}
         run: |
-          kubectl create secret generic api-orders-secret \
-            --from-literal=ConnectionStrings__DefaultConnection="$ConnectionStrings__DefaultConnection"
+          SECRET_NAME="api-orders-secret"
+          CONNECTION_STRING="Server=${{ env.DB_INSTANCE_PRODUTOS }},${{ env.DB_PORT }};Database=SnackTechProductsDb;User=${{ env.DB_UID_PRODUTOS }};Password=${{ env.DB_PASSWORD_PRODUTOS }};TrustServerCertificate=True"
+      
+          if kubectl get secret "$SECRET_NAME" > /dev/null 2>&1; then
+            kubectl delete secret "$SECRET_NAME" 
+          fi
+      
+          kubectl create secret generic "$SECRET_NAME"  \
+            --from-literal=ConnectionStrings__DefaultConnection="$CONNECTION_STRING"
       
       - name: Create/Update ConfigMap
         env:
-          ProdutoApiSettings__UrlBase: api-payment-service:8080/api
-          PagamentoApiSettings__UrlBase: api-products-service:8080/api
+          PRODUTO_API_URL: "http://api-orders-service:8080/api"
+          PAGAMENTO_API_URL: "http://api-products-service:8080/api"
         run: |
-          kubectl create configmap api-orders-configmap \
+          CONFIGMAP_NAME="api-orders-configmap"
+      
+          if kubectl get configmap "$CONFIGMAP_NAME"  > /dev/null 2>&1; then
+            kubectl delete configmap "$CONFIGMAP_NAME" 
+          fi
+      
+          kubectl create configmap "$CONFIGMAP_NAME" \
             --from-literal=ProdutoApiSettings__EnableIntegration="true" \
-            --from-literal=ProdutoApiSettings__UrlBase="$ProdutoApiSettings__UrlBase" \
+            --from-literal=ProdutoApiSettings__UrlBase="$PRODUTO_API_URL" \
             --from-literal=PagamentoApiSettings__EnableIntegration="true" \
-            --from-literal=PagamentoApiSettings__UrlBase="$PagamentoApiSettings__UrlBase"
+            --from-literal=PagamentoApiSettings__UrlBase="$PAGAMENTO_API_URL"
           
       - name: Replace ECR image string value
         env:

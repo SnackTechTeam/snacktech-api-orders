@@ -17,6 +17,8 @@ spec:
           envFrom: # Use envFrom to load from ConfigMap and Secret
             - secretRef:
                 name: api-orders-secret
+            - configMapRef:
+                name: api-orders-configmap
 
           resources:
             limits:
