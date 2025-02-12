@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SnackTech.Orders.Common.Dto.Api;
 
+[ExcludeFromCodeCoverage]
 public class ClienteSemIdDto
 {
     public string Nome { get; set; } = string.Empty;

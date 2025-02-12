@@ -249,6 +249,46 @@ public class PedidoGatewayTest
     }
 
     [Fact]
+    public async Task PesquisarPedidosPorStatus_DeveRetornarPedidos_QuandoExistiremPedidosComStatus()
+    {
+        // Arrange
+        var statusPesquisado = new[] { StatusPedidoValido.AguardandoPagamento, StatusPedidoValido.EmPreparacao };
+        var statusValores = statusPesquisado.Select(s => s.Valor).ToArray();
+
+        var pedidosDto = new List<PedidoDto>
+        {
+            new PedidoDto
+            {
+                Id = Guid.NewGuid(),
+                DataCriacao = DateTime.Now,
+                Status = StatusPedidoValido.AguardandoPagamento,
+                Cliente = _pedidoDtoExemplo.Cliente,
+                Itens = new List<PedidoItemDto>()
+            },
+            new PedidoDto
+            {
+                Id = Guid.NewGuid(),
+                DataCriacao = DateTime.Now,
+                Status = StatusPedidoValido.EmPreparacao,
+                Cliente = _pedidoDtoExemplo.Cliente,
+                Itens = new List<PedidoItemDto>()
+            }            
+        };
+
+        Mock.Arrange(() => _dataSource.PesquisarPedidosPorStatusAsync(Arg.IsAny<int[]>())).
+            ReturnsAsync(pedidosDto);
+
+        // Act
+        var resultado = await _pedidoGateway.PesquisarPedidosPorStatus(statusPesquisado);
+
+        // Assert
+        resultado.Should().NotBeNullOrEmpty();
+        resultado.Should().HaveCount(2);
+        resultado.Select(p => p.Status.Valor).Should().BeEquivalentTo(statusValores);
+    }
+
+
+    [Fact]
     public async Task PesquisarPedidosPorStatus_DeveRetornarPedidos_ComDadosCorretos()
     {
         // Arrange

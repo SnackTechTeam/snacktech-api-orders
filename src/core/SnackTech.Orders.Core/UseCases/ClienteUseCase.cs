@@ -1,14 +1,14 @@
-using SnackTech.Orders.Core.Domain.Types;
 using SnackTech.Orders.Common.Dto.Api;
 using SnackTech.Orders.Core.Domain.Entities;
-using SnackTech.Orders.Core.Gateways;
+using SnackTech.Orders.Core.Domain.Types;
+using SnackTech.Orders.Core.Interfaces;
 using SnackTech.Orders.Core.Presenters;
 
 namespace SnackTech.Orders.Core.UseCases;
 
 public static class ClienteUseCase
 {
-    internal static async Task<ResultadoOperacao<ClienteDto>> CriarNovoCliente(ClienteSemIdDto clienteDto, ClienteGateway clienteGateway)
+    internal static async Task<ResultadoOperacao<ClienteDto>> CriarNovoCliente(ClienteSemIdDto clienteDto, IClienteGateway clienteGateway)
     {
         try
         {
@@ -40,7 +40,7 @@ public static class ClienteUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<ClienteDto>> PesquisarPorCpf(string cpf, ClienteGateway gateway)
+    internal static async Task<ResultadoOperacao<ClienteDto>> PesquisarPorCpf(string cpf, IClienteGateway gateway)
     {
         try
         {
@@ -58,7 +58,7 @@ public static class ClienteUseCase
         }
     }
 
-    internal static async Task<ResultadoOperacao<ClienteDto>> SelecionarClientePadrao(ClienteGateway gateway)
+    internal static async Task<ResultadoOperacao<ClienteDto>> SelecionarClientePadrao(IClienteGateway gateway)
     {
         try
         {
