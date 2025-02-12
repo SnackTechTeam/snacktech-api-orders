@@ -21,8 +21,11 @@ spec:
                 name: api-orders-configmap
 
           resources:
+            requests:
+              memory: "128Mi"
+              cpu: "200m"
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "500m"
           ports:
             - containerPort: 8080
