@@ -6,7 +6,7 @@ namespace SnackTech.Orders.Driver.Payments.HttpApiClients
 {
     public interface IPagamentoHttpClient
     {
-        [Post("/pagamentos")]
+        [Post("/Pagamentos/mock")]
         Task<ApiResponse<PagamentoDto>> CriarPagamento([Body] PedidoPagamentoDto pedido);
     }
 }
