@@ -54,36 +54,17 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         return true;
     }
 
-    public async Task<bool> AlterarPedidoAsync(PedidoDto pedidoDto)
-    {
-        var pedidoEntity = Mapping.Mapper.Map<Pedido>(pedidoDto);
-
-        var resultadoItens = await AlterarItensDoPedidoAsync(pedidoDto);
-
-        if (!resultadoItens)
-        {
-            return false;
-        }
-
-        repositoryDbContext.Entry(pedidoEntity).State = EntityState.Modified;
-        await repositoryDbContext.SaveChangesAsync();
-
-        return true;
-    }
-
     public async Task<bool> AtualizarStatusPedidoAsync(PedidoDto pedidoDto)
     {
-        var pedidoBanco = await repositoryDbContext.Pedidos
-                            .AsNoTracking()
-                            .FirstOrDefaultAsync(p => p.Id == pedidoDto.Id);
+        var pedidoBanco = await repositoryDbContext
+            .Pedidos.FirstOrDefaultAsync(p => p.Id == pedidoDto.Id);
 
         if (pedidoBanco is null)
             return false;
 
         pedidoBanco.Status = (StatusPedido)pedidoDto.Status;
-        repositoryDbContext.Entry(pedidoBanco).State = EntityState.Modified;
-
         await repositoryDbContext.SaveChangesAsync();
+
         return true;
     }
 
@@ -92,9 +73,20 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidoEntity = Mapping.Mapper.Map<Pedido>(pedidoDto);
 
         //Para que o EF core não tente criar novos clientes e produtos a partir dos dados presentes no pedido
-        repositoryDbContext.Entry(pedidoEntity.Cliente).State = EntityState.Unchanged;
+        var cliente = repositoryDbContext.ChangeTracker
+            .Entries<Cliente>().FirstOrDefault(c => c.Entity.Id == pedidoEntity.Cliente.Id);
+
+        if (cliente is not null)
+        {
+            pedidoEntity.Cliente = cliente.Entity;
+        }
+        else
+        {
+            repositoryDbContext.Entry(pedidoEntity.Cliente).State = EntityState.Unchanged;
+        }
 
         repositoryDbContext.Pedidos.Add(pedidoEntity);
+
         var resultado = await repositoryDbContext.SaveChangesAsync();
 
         return resultado > 0;

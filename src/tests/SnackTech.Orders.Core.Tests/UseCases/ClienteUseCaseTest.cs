@@ -135,7 +135,6 @@ namespace SnackTech.Orders.Core.Tests.UseCases
         public async Task CriarNovoCliente_DeveRetornarErroInterno_QuandoOcorrerExcecao()
         {
             // Arrange
-            // Arrange
             var clienteDto = new ClienteSemIdDto
             {
                 Nome = "nome",

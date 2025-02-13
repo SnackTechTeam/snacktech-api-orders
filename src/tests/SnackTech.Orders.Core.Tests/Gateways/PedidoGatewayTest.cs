@@ -356,7 +356,7 @@ public class PedidoGatewayTest
     public async Task AtualizarStatusPedido_DeveRetornarFalse_SeAlterarPedidoAsync_DoDataSource_RetornarFalse()
     {
         // Arrange
-        Mock.Arrange(() => _dataSource.AlterarPedidoAsync(Arg.IsAny<PedidoDto>())).ReturnsAsync(false);
+        Mock.Arrange(() => _dataSource.AtualizarStatusPedidoAsync(Arg.IsAny<PedidoDto>())).ReturnsAsync(false);
 
         // Act
         var resultado = await _pedidoGateway.AtualizarStatusPedido(_pedidoExemplo);
