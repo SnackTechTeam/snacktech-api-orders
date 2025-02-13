@@ -17,11 +17,13 @@ spec:
           envFrom: # Use envFrom to load from ConfigMap and Secret
             - secretRef:
                 name: api-orders-secret
+            - configMapRef:
+                name: api-orders-configmap
 
           resources:
             limits:
               memory: "256Mi"
-              cpu: "1000m"
+              cpu: "500m"
           ports:
             - containerPort: 8080
           livenessProbe:
