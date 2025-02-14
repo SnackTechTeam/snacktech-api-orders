@@ -97,7 +97,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidosBanco = await repositoryDbContext.Pedidos
                     .AsNoTracking()
                     .Include(p => p.Cliente)
-                    .Include(p => p.Itens)//.ThenInclude(i => i.Produto)
+                    .Include(p => p.Itens)
                     .Where(p => p.Cliente.Id == clienteId)
                     .ToListAsync();
 
@@ -109,7 +109,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidosBanco = await repositoryDbContext.Pedidos
                    .AsNoTracking()
                    .Include(p => p.Cliente)
-                   .Include(p => p.Itens)//.ThenInclude(i => i.Produto)
+                   .Include(p => p.Itens)
                    .Where(p => valor.Contains((int)p.Status))
                    .ToListAsync();
 
@@ -121,7 +121,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidoBanco = await repositoryDbContext.Pedidos
             .AsNoTracking()
             .Include(p => p.Cliente)
-            .Include(p => p.Itens)//.ThenInclude(i => i.Produto)
+            .Include(p => p.Itens)
             .FirstOrDefaultAsync(p => p.Id == identificacao);
 
         if (pedidoBanco == null)
