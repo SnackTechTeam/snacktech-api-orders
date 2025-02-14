@@ -7,9 +7,9 @@ namespace SnackTech.Orders.Driver.Products.Services
 {
     public class ProdutoApi(IProdutoHttpClient _produtoHttpClient, IRequestExecutorHelper _requestExecutorHelper) : IProdutoApi
     {
-        public Task<ResultadoOperacao<ProdutoDto>> BuscarProdutoAsync(Guid id)
+        public async Task<ResultadoOperacao<ProdutoDto>> BuscarProdutoAsync(Guid id)
         {
-            return _requestExecutorHelper.Execute(() => _produtoHttpClient.BuscarProdutoAsync(id));
+            return await _requestExecutorHelper.Execute(() => _produtoHttpClient.BuscarProdutoAsync(id));
         }
     }
 }

@@ -8,9 +8,9 @@ namespace SnackTech.Orders.Driver.Payments.Services
 {
     public class PagamentoApi(IPagamentoHttpClient _pagamentoHttpClient, IRequestExecutorHelper _requestExecutorHelper) : IPagamentoApi
     {
-        public Task<ResultadoOperacao<PagamentoDto>> CriarPagamento(PedidoPagamentoDto pedido)
+        public async Task<ResultadoOperacao<PagamentoDto>> CriarPagamentoAsync(PedidoPagamentoDto pedido)
         {
-            return _requestExecutorHelper.Execute(() => _pagamentoHttpClient.CriarPagamento(pedido));
+            return await _requestExecutorHelper.Execute(() => _pagamentoHttpClient.CriarPagamentoAsync(pedido));
         }
     }
 }

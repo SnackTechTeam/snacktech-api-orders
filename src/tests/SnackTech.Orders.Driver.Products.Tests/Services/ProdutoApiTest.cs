@@ -49,7 +49,7 @@ namespace SnackTech.Orders.Driver.Products.Tests.Services
                 .Returns((Func<Task<ApiResponse<ProdutoDto>>> func) =>
                 {
                     // Retorna o resultado esperado
-                    return Task.FromResult(new ResultadoOperacao<ProdutoDto>(func().Result.Content));                    
+                    return Task.FromResult(new ResultadoOperacao<ProdutoDto>(func()?.Result.Content));                    
                 });
 
             // Act

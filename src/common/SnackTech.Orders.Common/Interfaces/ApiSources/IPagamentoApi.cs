@@ -5,6 +5,6 @@ namespace SnackTech.Orders.Common.Interfaces.ApiSources
 {
     public interface IPagamentoApi
     {
-        Task<ResultadoOperacao<PagamentoDto>> CriarPagamento(PedidoPagamentoDto pedido);
+        Task<ResultadoOperacao<PagamentoDto>> CriarPagamentoAsync(PedidoPagamentoDto pedido);
     }
 }

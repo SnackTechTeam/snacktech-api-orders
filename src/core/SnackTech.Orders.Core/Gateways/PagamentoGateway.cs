@@ -11,7 +11,7 @@ namespace SnackTech.Orders.Core.Gateways
         public async Task<ResultadoOperacao<PagamentoDto>> CriarPagamentoAsync(Pedido pedido)
         {
             var pedidoPagamentoDto = ConverterParaDto(pedido);
-            return await _pagamentoApi.CriarPagamento(pedidoPagamentoDto);
+            return await _pagamentoApi.CriarPagamentoAsync(pedidoPagamentoDto);
         }
 
         public static PedidoPagamentoDto ConverterParaDto(Pedido pedido)

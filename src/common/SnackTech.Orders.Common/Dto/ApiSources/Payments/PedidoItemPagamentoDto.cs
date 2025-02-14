@@ -2,7 +2,6 @@
 
 namespace SnackTech.Orders.Common.Dto.ApiSources.Payments
 {
-    [ExcludeFromCodeCoverage]
     public class PedidoItemPagamentoDto
     {
         public Guid PedidoItemId { get; set; }
