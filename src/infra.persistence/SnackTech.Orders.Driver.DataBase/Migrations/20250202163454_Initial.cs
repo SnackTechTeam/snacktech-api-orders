@@ -50,7 +50,7 @@ namespace SnackTech.Orders.Driver.DataBase.Migrations
                     DataCriacao = table.Column<DateTime>(type: "datetime", nullable: false),
                     ClienteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    PagamentoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PagamentoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
