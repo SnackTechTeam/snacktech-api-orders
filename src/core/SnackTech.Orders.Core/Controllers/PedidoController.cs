@@ -4,13 +4,16 @@ using SnackTech.Orders.Common.Interfaces.DataSources;
 using SnackTech.Orders.Core.Interfaces;
 using SnackTech.Orders.Core.UseCases;
 using SnackTech.Orders.Common.Interfaces.ApiSources;
+using SnackTech.Orders.Common.Dto.ApiSources.Payments;
+using Microsoft.Extensions.Options;
 
 namespace SnackTech.Orders.Core.Controllers;
 
 public class PedidoController(IPedidoDataSource pedidoDataSource,
                                 IClienteDataSource clienteDataSource,
                                 IPagamentoApi pagamentoApi,
-                                IProdutoApi produtoApi) : IPedidoController
+                                IProdutoApi produtoApi,
+                                IOptions<PagamentoApiSettings> pagamentoApiSettings) : IPedidoController
 {
     public async Task<ResultadoOperacao<Guid>> IniciarPedido(string? cpfCliente)
     {
@@ -49,10 +52,15 @@ public class PedidoController(IPedidoDataSource pedidoDataSource,
         return pedidos;
     }
 
-    public async Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao)
+    public async Task<ResultadoOperacao<PagamentoDto>> FinalizarPedidoParaPagamento(string identificacao)
     {
         var pedidoGateway = new PedidoGateway(pedidoDataSource);
-        var pagamentoGateway = new PagamentoGateway(pagamentoApi);
+        PagamentoGateway? pagamentoGateway = null;
+
+        if (pagamentoApiSettings.Value.EnableIntegration)
+        {
+            pagamentoGateway = new PagamentoGateway(pagamentoApi);
+        }
 
         var resultado = await PedidoUseCase.FinalizarPedidoParaPagamento(identificacao, pedidoGateway, pagamentoGateway);
 

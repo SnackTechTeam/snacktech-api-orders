@@ -28,11 +28,9 @@ public class MappingProfile : Profile
         CreateMap<Cliente, ClienteDto>();
         CreateMap<ClienteDto, Cliente>();
 
-        CreateMap<PedidoItem, PedidoItemDto>()
-            .ForMember(dest => dest.Valor, opt => opt.MapFrom(src => src.ValorTotal));
+        CreateMap<PedidoItem, PedidoItemDto>();
 
-        CreateMap<PedidoItemDto, PedidoItem>()
-            .ForMember(dest => dest.ValorTotal, opt => opt.MapFrom(src => src.Valor));
+        CreateMap<PedidoItemDto, PedidoItem>();
 
         CreateMap<Pedido, PedidoDto>();
         CreateMap<PedidoDto, Pedido>();

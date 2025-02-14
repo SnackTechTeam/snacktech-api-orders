@@ -8,7 +8,7 @@ public interface IPedidoController
     Task<ResultadoOperacao<PedidoRetornoDto>> BuscarPorIdenticacao(string identificacao);
     Task<ResultadoOperacao<PedidoRetornoDto>> BuscarUltimoPedidoCliente(string cpfCliente);
     Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosParaPagamento();
-    Task<ResultadoOperacao<PedidoPagamentoDto>> FinalizarPedidoParaPagamento(string identificacao);
+    Task<ResultadoOperacao<PagamentoDto>> FinalizarPedidoParaPagamento(string identificacao);
     Task<ResultadoOperacao<PedidoRetornoDto>> AtualizarPedido(PedidoAtualizacaoDto pedidoAtualizado);
     Task<ResultadoOperacao<IEnumerable<PedidoRetornoDto>>> ListarPedidosAtivos();
     Task<ResultadoOperacao> IniciarPreparacaoPedido(string identificacao);

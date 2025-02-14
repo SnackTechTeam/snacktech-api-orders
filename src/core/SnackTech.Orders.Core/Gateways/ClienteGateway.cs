@@ -2,19 +2,20 @@ using SnackTech.Orders.Common.Dto.DataSource;
 using SnackTech.Orders.Common.Interfaces.DataSources;
 using SnackTech.Orders.Core.Domain.Entities;
 using SnackTech.Orders.Core.Domain.Types;
+using SnackTech.Orders.Core.Interfaces;
 
 namespace SnackTech.Orders.Core.Gateways;
 
-internal class ClienteGateway(IClienteDataSource dataSource)
+internal class ClienteGateway(IClienteDataSource dataSource) : IClienteGateway
 {
-    internal async Task<bool> CadastrarNovoCliente(Cliente entidade)
+    public async Task<bool> CadastrarNovoCliente(Cliente entidade)
     {
         ClienteDto dto = ConverterParaDto(entidade);
 
         return await dataSource.InserirClienteAsync(dto);
     }
 
-    internal async Task<Cliente?> ProcurarClientePorCpf(CpfValido cpf)
+    public async Task<Cliente?> ProcurarClientePorCpf(CpfValido cpf)
     {
         var clienteDto = await dataSource.PesquisarPorCpfAsync(cpf);
 
@@ -23,10 +24,10 @@ internal class ClienteGateway(IClienteDataSource dataSource)
             return null;
         }
 
-        return converterParaEntidade(clienteDto);
+        return ConverterParaEntidade(clienteDto);
     }
 
-    internal async Task<Cliente?> ProcurarClientePorEmail(EmailValido emailCliente)
+    public async Task<Cliente?> ProcurarClientePorEmail(EmailValido emailCliente)
     {
         var clienteDto = await dataSource.PesquisarPorEmailAsync(emailCliente);
 
@@ -35,10 +36,10 @@ internal class ClienteGateway(IClienteDataSource dataSource)
             return null;
         }
 
-        return converterParaEntidade(clienteDto);
+        return ConverterParaEntidade(clienteDto);
     }
 
-    internal async Task<Cliente?> ProcurarClientePorIdentificacao(GuidValido identificacao)
+    public async Task<Cliente?> ProcurarClientePorIdentificacao(GuidValido identificacao)
     {
         var clienteDto = await dataSource.PesquisarPorIdAsync(identificacao);
 
@@ -47,10 +48,10 @@ internal class ClienteGateway(IClienteDataSource dataSource)
             return null;
         }
 
-        return converterParaEntidade(clienteDto);
+        return ConverterParaEntidade(clienteDto);
     }
 
-    internal static ClienteDto ConverterParaDto(Cliente cliente)
+    public static ClienteDto ConverterParaDto(Cliente cliente)
     {
         return new ClienteDto
         {
@@ -61,7 +62,7 @@ internal class ClienteGateway(IClienteDataSource dataSource)
         };
     }
 
-    internal static Cliente converterParaEntidade(ClienteDto clienteDto)
+    public static Cliente ConverterParaEntidade(ClienteDto clienteDto)
     {
         return new Cliente(clienteDto.Id, clienteDto.Nome, clienteDto.Email, clienteDto.Cpf);
     }

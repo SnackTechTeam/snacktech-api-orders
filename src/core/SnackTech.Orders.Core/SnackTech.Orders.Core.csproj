@@ -10,14 +10,22 @@
     <Folder Include="Domain\Entities\" />
     <Folder Include="Domain\Util\" />
     <Folder Include="Domain\Types\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Controllers\" />
     <Folder Include="Presenters\" />
     <Folder Include="UseCases\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\common\SnackTech.Orders.Common\SnackTech.Orders.Common.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="SnackTech.Orders.Core.Tests" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
 
 </Project>

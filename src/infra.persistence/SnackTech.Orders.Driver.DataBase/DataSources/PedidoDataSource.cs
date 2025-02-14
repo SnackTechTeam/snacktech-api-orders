@@ -11,27 +11,28 @@ namespace SnackTech.Orders.Driver.DataBase.DataSources;
 
 public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedidoDataSource
 {
-    public async Task<bool> AlterarItensDoPedidoAsync(PedidoDto pedidoAtualizado)
+    public async Task<bool> AlterarItensDoPedidoAsync(PedidoDto pedidoDto)
     {
         var pedido = await repositoryDbContext.Pedidos
                 .Include(p => p.Itens)
-                .Where(p => p.Id == pedidoAtualizado.Id)
+                .Where(p => p.Id == pedidoDto.Id)
                 .FirstOrDefaultAsync();
 
         if (pedido is null)
         {
-            throw new PedidoRepositoryException($"Pedido com identificacao {pedidoAtualizado.Id} não encontrado no banco de dados.");
+            throw new PedidoRepositoryException($"Pedido com identificacao {pedidoDto.Id} não encontrado no banco de dados.");
         }
 
         var itensNoBanco = pedido.Itens.ToDictionary(p => p.Id, p => p);
 
-        foreach (var itemAtualizar in pedidoAtualizado.Itens)
+        foreach (var itemAtualizar in pedidoDto.Itens)
         {
             var itemEntityAtualizar = Mapping.Mapper.Map<PedidoItem>(itemAtualizar);
             if (itensNoBanco.TryGetValue(itemEntityAtualizar.Id, out var itemBanco))
             {
                 itemBanco.Quantidade = itemAtualizar.Quantidade;
-                itemBanco.ValorTotal = itemAtualizar.Valor;
+                itemBanco.ValorTotal = itemAtualizar.ValorTotal;
+                itemBanco.ValorUnitario = itemEntityAtualizar.ValorUnitario;
                 itemBanco.Observacao = itemAtualizar.Observacao;
                 itemBanco.ProdutoId = itemEntityAtualizar.ProdutoId;
             }
@@ -45,7 +46,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         }
 
         //deletar itens que foram removidos
-        var itensParaRemover = itensNoBanco.Where(i => !pedidoAtualizado.Itens.Any(p => p.Id == i.Key));
+        var itensParaRemover = itensNoBanco.Where(i => !pedidoDto.Itens.Any(p => p.Id == i.Key));
         repositoryDbContext.PedidoItens.RemoveRange(itensParaRemover.Select(i => i.Value));
 
         await repositoryDbContext.SaveChangesAsync();
@@ -53,36 +54,17 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         return true;
     }
 
-    public async Task<bool> AlterarPedidoAsync(PedidoDto pedidoDto)
-    {
-        var pedidoEntity = Mapping.Mapper.Map<Pedido>(pedidoDto);
-
-        var resultadoItens = await AlterarItensDoPedidoAsync(pedidoDto);
-
-        if (!resultadoItens)
-        {
-            return false;
-        }
-
-        repositoryDbContext.Entry(pedidoEntity).State = EntityState.Modified;
-        await repositoryDbContext.SaveChangesAsync();
-
-        return true;
-    }
-
     public async Task<bool> AtualizarStatusPedidoAsync(PedidoDto pedidoDto)
     {
-        var pedidoBanco = await repositoryDbContext.Pedidos
-                            .AsNoTracking()
-                            .FirstOrDefaultAsync(p => p.Id == pedidoDto.Id);
+        var pedidoBanco = await repositoryDbContext
+            .Pedidos.FirstOrDefaultAsync(p => p.Id == pedidoDto.Id);
 
         if (pedidoBanco is null)
             return false;
 
         pedidoBanco.Status = (StatusPedido)pedidoDto.Status;
-        repositoryDbContext.Entry(pedidoBanco).State = EntityState.Modified;
-
         await repositoryDbContext.SaveChangesAsync();
+
         return true;
     }
 
@@ -91,13 +73,20 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidoEntity = Mapping.Mapper.Map<Pedido>(pedidoDto);
 
         //Para que o EF core não tente criar novos clientes e produtos a partir dos dados presentes no pedido
-        repositoryDbContext.Entry(pedidoEntity.Cliente).State = EntityState.Unchanged;
-        //foreach (var item in pedidoEntity.Itens)
-        //{
-        //    repositoryDbContext.Entry(item.Produto).State = EntityState.Unchanged;
-        //}
+        var cliente = repositoryDbContext.ChangeTracker
+            .Entries<Cliente>().FirstOrDefault(c => c.Entity.Id == pedidoEntity.Cliente.Id);
+
+        if (cliente is not null)
+        {
+            pedidoEntity.Cliente = cliente.Entity;
+        }
+        else
+        {
+            repositoryDbContext.Entry(pedidoEntity.Cliente).State = EntityState.Unchanged;
+        }
 
         repositoryDbContext.Pedidos.Add(pedidoEntity);
+
         var resultado = await repositoryDbContext.SaveChangesAsync();
 
         return resultado > 0;
@@ -108,7 +97,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidosBanco = await repositoryDbContext.Pedidos
                     .AsNoTracking()
                     .Include(p => p.Cliente)
-                    .Include(p => p.Itens)//.ThenInclude(i => i.Produto)
+                    .Include(p => p.Itens)
                     .Where(p => p.Cliente.Id == clienteId)
                     .ToListAsync();
 
@@ -120,7 +109,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidosBanco = await repositoryDbContext.Pedidos
                    .AsNoTracking()
                    .Include(p => p.Cliente)
-                   .Include(p => p.Itens)//.ThenInclude(i => i.Produto)
+                   .Include(p => p.Itens)
                    .Where(p => valor.Contains((int)p.Status))
                    .ToListAsync();
 
@@ -132,7 +121,7 @@ public class PedidoDataSource(RepositoryDbContext repositoryDbContext) : IPedido
         var pedidoBanco = await repositoryDbContext.Pedidos
             .AsNoTracking()
             .Include(p => p.Cliente)
-            .Include(p => p.Itens)//.ThenInclude(i => i.Produto)
+            .Include(p => p.Itens)
             .FirstOrDefaultAsync(p => p.Id == identificacao);
 
         if (pedidoBanco == null)
