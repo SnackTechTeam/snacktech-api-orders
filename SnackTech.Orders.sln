@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Common.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Core.Tests", "src\tests\SnackTech.Orders.Core.Tests\SnackTech.Orders.Core.Tests.csproj", "{82FD7C15-A8EF-4991-BC64-07F5A7DFEE13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackTech.Orders.Driver.Products.Tests", "src\tests\SnackTech.Orders.Driver.Products.Tests\SnackTech.Orders.Driver.Products.Tests.csproj", "{16364B9F-E113-4FE4-BB34-1FFAAF8BA6B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{82FD7C15-A8EF-4991-BC64-07F5A7DFEE13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82FD7C15-A8EF-4991-BC64-07F5A7DFEE13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82FD7C15-A8EF-4991-BC64-07F5A7DFEE13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16364B9F-E113-4FE4-BB34-1FFAAF8BA6B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16364B9F-E113-4FE4-BB34-1FFAAF8BA6B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16364B9F-E113-4FE4-BB34-1FFAAF8BA6B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16364B9F-E113-4FE4-BB34-1FFAAF8BA6B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,5 +119,6 @@ Global
 		{655C5F75-9908-42C8-8716-2AF350D9CD34} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
 		{412162AF-91EA-48AA-88DD-50CF1DF9241F} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
 		{82FD7C15-A8EF-4991-BC64-07F5A7DFEE13} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
+		{16364B9F-E113-4FE4-BB34-1FFAAF8BA6B7} = {9E078348-E1B5-4568-BD35-4EEB47B9917C}
 	EndGlobalSection
 EndGlobal
