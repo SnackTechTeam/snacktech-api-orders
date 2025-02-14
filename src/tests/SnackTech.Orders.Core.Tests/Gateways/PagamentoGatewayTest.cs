@@ -29,7 +29,7 @@ namespace SnackTech.Orders.Core.Tests.Gateways
             var resultadoEsperado = new ResultadoOperacao<PagamentoDto>(pagamentoEsperado);            
 
             _pagamentoApiMock
-                .Setup(api => api.CriarPagamento(It.IsAny<PedidoPagamentoDto>()))
+                .Setup(api => api.CriarPagamentoAsync(It.IsAny<PedidoPagamentoDto>()))
                 .ReturnsAsync(resultadoEsperado);
 
             // Act
@@ -39,7 +39,7 @@ namespace SnackTech.Orders.Core.Tests.Gateways
             resultado.Sucesso.Should().BeTrue();
             resultado.Dados.Should().NotBeNull();
             resultado.Dados.QrCode.Should().Be("123ABC");
-            _pagamentoApiMock.Verify(api => api.CriarPagamento(It.IsAny<PedidoPagamentoDto>()), Times.Once());
+            _pagamentoApiMock.Verify(api => api.CriarPagamentoAsync(It.IsAny<PedidoPagamentoDto>()), Times.Once());
         }
 
         [Fact]
