@@ -79,12 +79,11 @@ jobs:
       run: |
         echo "Coverage Percentage: ${{ steps.coverage.outputs.coverage_percentage }}%"
 
-  # Falta ajustar as variaveis e secrets para a api de pedidos
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     needs: build
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
       - name: Checkout
@@ -127,13 +126,13 @@ jobs:
       
       - name: Create/Update Secrets
         env:
-          DB_INSTANCE_PRODUTOS: ${{ secrets.DB_INSTANCE_PRODUTOS }}
+          DB_INSTANCE_PEDIDOS: ${{ secrets.DB_INSTANCE_PEDIDOS }}
+          DB_PASSWORD_PEDIDOS: ${{ secrets.DB_PASSWORD_PEDIDOS }}
+          DB_UID_PEDIDOS: ${{ secrets.DB_UID_PEDIDOS }}
           DB_PORT: ${{ vars.DB_PORT }}
-          DB_UID_PRODUTOS: ${{ secrets.DB_UID_PRODUTOS }}
-          DB_PASSWORD_PRODUTOS: ${{ secrets.DB_PASSWORD_PRODUTOS }}
         run: |
           SECRET_NAME="api-orders-secret"
-          CONNECTION_STRING="Server=${{ env.DB_INSTANCE_PRODUTOS }},${{ env.DB_PORT }};Database=SnackTechProductsDb;User=${{ env.DB_UID_PRODUTOS }};Password=${{ env.DB_PASSWORD_PRODUTOS }};TrustServerCertificate=True"
+          CONNECTION_STRING="Server=${{ env.DB_INSTANCE_PEDIDOS }},${{ env.DB_PORT }};Database=SnackTechProductsDb;User=${{ env.DB_UID_PEDIDOS }};Password=${{ env.DB_PASSWORD_PEDIDOS }};TrustServerCertificate=True"
       
           if kubectl get secret "$SECRET_NAME" > /dev/null 2>&1; then
             kubectl delete secret "$SECRET_NAME" 
@@ -144,8 +143,8 @@ jobs:
       
       - name: Create/Update ConfigMap
         env:
-          PRODUTO_API_URL: "http://api-orders-service:8080/api"
-          PAGAMENTO_API_URL: "http://api-products-service:8080/api"
+          PRODUTO_API_URL: "http://api-products-service:8080/api"
+          PAGAMENTO_API_URL: "http://api-payment-service:8080/api"
         run: |
           CONFIGMAP_NAME="api-orders-configmap"
       
