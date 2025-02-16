@@ -6,9 +6,11 @@ using SnackTech.Orders.Core.UseCases;
 using SnackTech.Orders.Common.Interfaces.ApiSources;
 using SnackTech.Orders.Common.Dto.ApiSources.Payments;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SnackTech.Orders.Core.Controllers;
 
+[ExcludeFromCodeCoverage]
 public class PedidoController(IPedidoDataSource pedidoDataSource,
                                 IClienteDataSource clienteDataSource,
                                 IPagamentoApi pagamentoApi,
