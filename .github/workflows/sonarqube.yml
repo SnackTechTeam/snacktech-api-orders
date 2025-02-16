@@ -33,7 +33,7 @@ jobs:
     - name: Build and Test
       run: |
         dotnet build ./SnackTech.Orders.sln
-        dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx"  --settings:CollectCoverage=true,CoverletOutputFormat=opencover,CoverletOutput=./coverage/coverage.opencover.xml
+        dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx" --settings "CollectCoverage=true;CoverletOutputFormat=opencover;CoverletOutput=./coverage/coverage.opencover.xml"
 
     - name: Run SonarScanner
       env:
