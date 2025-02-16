@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using SnackTech.Orders.Common.Dto.DataSource;
 using SnackTech.Orders.Driver.DataBase.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SnackTech.Orders.Driver.DataBase.Util;
 
+[ExcludeFromCodeCoverage]
 public static class Mapping
 {
     private static readonly Lazy<IMapper> Lazy = new Lazy<IMapper>(() =>

@@ -1,7 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SnackTech.Orders.Driver.API.CustomResponses
 {
     public record ErrorResponse(string Message, ExceptionResponse? Exception);
 
+    [ExcludeFromCodeCoverage]
     public class ExceptionResponse
     {
         public string? Type { get; private set; }

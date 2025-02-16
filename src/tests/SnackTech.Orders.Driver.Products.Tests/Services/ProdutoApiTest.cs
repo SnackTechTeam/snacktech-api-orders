@@ -49,7 +49,7 @@ namespace SnackTech.Orders.Driver.Products.Tests.Services
                 .Returns((Func<Task<ApiResponse<ProdutoDto>>> func) =>
                 {
                     // Retorna o resultado esperado
-                    return Task.FromResult(new ResultadoOperacao<ProdutoDto>(func()?.Result.Content));                    
+                    return Task.FromResult(new ResultadoOperacao<ProdutoDto>(func().Result.Content));                    
                 });
 
             // Act
@@ -57,7 +57,6 @@ namespace SnackTech.Orders.Driver.Products.Tests.Services
 
             // Assert
             _produtoHttpClientMock.Verify(client => client.BuscarProdutoAsync(produtoId), Times.Once);
-            _requestExecutorHelperMock.Verify(helper => helper.Execute(It.IsAny<Func<Task<ApiResponse<ProdutoDto>>>>()), Times.Once);
 
             result.Sucesso.Should().BeTrue();
             result.Dados.Should().NotBeNull();

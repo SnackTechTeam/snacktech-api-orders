@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace SnackTech.Orders.Common.Dto.Api;
 
 public class PedidoItemAtualizacaoDto

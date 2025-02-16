@@ -70,7 +70,7 @@ namespace SnackTech.Orders.Driver.API.Tests.ControllersTests
             var objectResult = Assert.IsType<ObjectResult>(resultado);
             var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
 
-            Assert.NotNull(payload.Exception);
+            Assert.NotNull(payload.Exception);            
             Assert.Equal("Erro inesperado", payload.Message);
         }
 
