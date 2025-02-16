@@ -1,5 +1,6 @@
 {
     "version": 1,
+    "isRoot": true,  
     "tools": {
       "dotnet-sonarscanner": {
         "version": "5.14.0", 
