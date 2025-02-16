@@ -20,14 +20,22 @@ jobs:
       run: |
         dotnet tool install --global dotnet-sonarscanner
 
+    - name: Install OpenCover
+      run: dotnet tool install --global opencover
+
+    - name: Run Tests and Generate Coverage Report
+      run: |
+        dotnet build ./SnackTech.Orders.sln
+        dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=TestResults.trx"
+
+        # Convert coverage data to OpenCover XML format using ReportGenerator
+        dotnet tool install --global reportgenerator
+        reportgenerator -reports:TestResults.trx -targetdir:./Coverage -reporttypes:OpenCover
+
     - name: Run SonarScanner
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        BRANCH_NAME: ${{ github.ref_name }} 
+        BRANCH_NAME: ${{ github.ref_name }}
       run: |
-        dotnet-sonarscanner begin /k:"SnackTechTeam_snacktech-api-orders" /o:"snacktechteam" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**/TestResults.trx" /d:sonar.branch.name="${{ env.BRANCH_NAME }}"
-    
-        dotnet build ./SnackTech.Orders.sln
-        dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx"
-    
+        dotnet-sonarscanner begin /k:"SnackTechTeam_snacktech-api-orders" /o:"snacktechteam" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="./Coverage/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="TestResults.trx" /d:sonar.branch.name="${{ env.BRANCH_NAME }}"
         dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
