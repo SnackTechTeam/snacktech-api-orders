@@ -16,18 +16,15 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Install SonarScanner and ReportGenerator
-      run: |
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet tool install --global reportgenerator
+    - name: Install Tools
+      run: dotnet tool restore  # Use dotnet tool restore
 
     - name: Run Tests and Generate Coverage Report
       run: |
         dotnet build ./SnackTech.Orders.sln
         dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=TestResults.trx"
-
-        # Convert coverage data to OpenCover XML format using ReportGenerator
         reportgenerator -reports:TestResults.trx -targetdir:./Coverage -reporttypes:OpenCover
+        ls -lR Coverage  # Debug: List directory contents
 
     - name: Run SonarScanner
       env:
