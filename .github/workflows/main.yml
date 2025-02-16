@@ -75,10 +75,15 @@ jobs:
         echo "Coverage Percentage: $coverage_percentage%"
         echo "coverage_percentage=$coverage_percentage" >> $GITHUB_OUTPUT
 
-    - name: Print Coverage Percentage
+    - name: Print Coverage Percentage and validate minimum coverage
       run: |
         echo "Coverage Percentage: ${{ steps.coverage.outputs.coverage_percentage }}%"
 
+        if [[ $(bc <<< "${{ steps.coverage.outputs.coverage_percentage }} < 70.0") -eq 1 ]]; then
+          echo "Coverage percentage is less than 70%!"
+          exit 1
+        fi
+        
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -132,7 +137,7 @@ jobs:
           DB_PORT: ${{ vars.DB_PORT }}
         run: |
           SECRET_NAME="api-orders-secret"
-          CONNECTION_STRING="Server=${{ env.DB_INSTANCE_PEDIDOS }},${{ env.DB_PORT }};Database=SnackTechProductsDb;User=${{ env.DB_UID_PEDIDOS }};Password=${{ env.DB_PASSWORD_PEDIDOS }};TrustServerCertificate=True"
+          CONNECTION_STRING="Server=${{ env.DB_INSTANCE_PEDIDOS }},${{ env.DB_PORT }};Database=SnackTechOrdersDb;User=${{ env.DB_UID_PEDIDOS }};Password=${{ env.DB_PASSWORD_PEDIDOS }};TrustServerCertificate=True"
       
           if kubectl get secret "$SECRET_NAME" > /dev/null 2>&1; then
             kubectl delete secret "$SECRET_NAME" 
