@@ -2,13 +2,13 @@
     "version": 1,
     "tools": {
       "dotnet-sonarscanner": {
-        "version": "latest",
+        "version": "5.14.0", 
         "commands": [
           "dotnet-sonarscanner"
         ]
       },
       "reportgenerator": {
-        "version": "latest",
+        "version": "5.1.18", 
         "commands": [
           "reportgenerator"
         ]
