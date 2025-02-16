@@ -19,25 +19,14 @@ jobs:
     - name: Install SonarScanner
       run: |
         dotnet tool install --global dotnet-sonarscanner
-        # Retry coverlet.collector installation in case of transient errors
-        for i in 1 2 3; do
-          if dotnet tool install --global coverlet.collector; then
-            echo "coverlet.collector installed successfully on attempt $i"
-            break
-          else
-            echo "coverlet.collector installation failed on attempt $i, retrying..."
-            sleep 10 # Wait for 10 seconds before retrying
-          fi
-        done
-
-    - name: Build and Test
-      run: |
-        dotnet build ./SnackTech.Orders.sln
-        dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx" --settings "CollectCoverage=true;CoverletOutputFormat=opencover;CoverletOutput=./coverage/coverage.opencover.xml"
 
     - name: Run SonarScanner
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        dotnet-sonarscanner begin /k:"SnackTechTeam_snacktech-api-orders" /o:"snacktechteam" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="./coverage/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**/TestResults.trx"
+        dotnet-sonarscanner begin /k:"SnackTechTeam_snacktech-api-orders" /o:"snacktechteam" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+
+        dotnet build ./SnackTech.Orders.sln
+        dotnet test ./SnackTech.Orders.sln --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx"
+
         dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
