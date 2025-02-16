@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "tools": {
+      "dotnet-sonarscanner": {
+        "version": "latest",
+        "commands": [
+          "dotnet-sonarscanner"
+        ]
+      },
+      "reportgenerator": {
+        "version": "latest",
+        "commands": [
+          "reportgenerator"
+        ]
+      }
+    }
+  }
