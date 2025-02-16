@@ -19,7 +19,16 @@ jobs:
     - name: Install SonarScanner
       run: |
         dotnet tool install --global dotnet-sonarscanner
-        dotnet tool install --global coverlet.collector
+        # Retry coverlet.collector installation in case of transient errors
+        for i in 1 2 3; do
+          if dotnet tool install --global coverlet.collector; then
+            echo "coverlet.collector installed successfully on attempt $i"
+            break
+          else
+            echo "coverlet.collector installation failed on attempt $i, retrying..."
+            sleep 10 # Wait for 10 seconds before retrying
+          fi
+        done
 
     - name: Build and Test
       run: |
