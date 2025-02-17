@@ -34,7 +34,7 @@ jobs:
       run: dotnet build $SOLUTION_PATH --configuration Release
 
     - name: Test
-      run: dotnet test $SOLUTION_PATH --configuration Release --settings coverage.runsettings
+      run: dotnet test $SOLUTION_PATH --configuration Release --settings coverage.runsettings.xml
 
     - name: Install ReportGenerator and dotnet-coverage
       run: |
