@@ -35,7 +35,6 @@ jobs:
 
     - name: Test
       run: dotnet test $SOLUTION_PATH --configuration Release --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx"
-    #  run: dotnet test $SOLUTION_PATH --configuration Release --settings coverage.runsettings.xml
 
     - name: Install ReportGenerator and dotnet-coverage
       run: |
@@ -48,7 +47,6 @@ jobs:
 
     - name: Generate Coverage Report
       run: reportgenerator -reports:./**/merged.cobertura.xml -targetdir:./CoverageReport -reporttypes:Html -filefilters:-**/Migrations*
-     #run: reportgenerator -reports:**/TestResults/**/coverage.cobertura.xml -targetdir:TestResults/CoverageReport -filefilters:-**/Migrations*
 
     - name: Extract Coverage Percentage
       id: coverage
