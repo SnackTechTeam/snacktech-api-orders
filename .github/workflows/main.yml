@@ -34,20 +34,48 @@ jobs:
       run: dotnet build $SOLUTION_PATH --configuration Release
 
     - name: Test
-      run: dotnet test $SOLUTION_PATH --configuration Release --settings coverage.runsettings.xml
+      run: dotnet test $SOLUTION_PATH --configuration Release --collect:"XPlat Code Coverage" --logger:"trx;LogFileName=../TestResults.trx"
+    #  run: dotnet test $SOLUTION_PATH --configuration Release --settings coverage.runsettings.xml
 
     - name: Install ReportGenerator and dotnet-coverage
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        # dotnet tool install -g dotnet-coverage
+        dotnet tool install -g dotnet-coverage
         
-    # - name: Merge Test Results
-    #   run: |
-    #     dotnet-coverage merge *.cobertura.xml --recursive --output merged.cobertura.xml --output-format cobertura
+    - name: Merge Test Results
+      run: |
+        dotnet-coverage merge *.cobertura.xml --recursive --output merged.cobertura.xml --output-format cobertura
 
     - name: Generate Coverage Report
-      run: reportgenerator -reports:**/TestResults/**/coverage.cobertura.xml -targetdir:TestResults/CoverageReport -filefilters:-**/Migrations*
-    #  run: reportgenerator -reports:./**/merged.cobertura.xml -targetdir:./CoverageReport -reporttypes:Html       
+      run: reportgenerator -reports:./**/merged.cobertura.xml -targetdir:./CoverageReport -reporttypes:Html -filefilters:-**/Migrations*
+     #run: reportgenerator -reports:**/TestResults/**/coverage.cobertura.xml -targetdir:TestResults/CoverageReport -filefilters:-**/Migrations*
+
+    - name: Extract Coverage Percentage
+      id: coverage
+      run: |
+        # Install xmllint if not already installed
+        sudo apt-get update
+        sudo apt-get install -y libxml2-utils bc
+
+        # Find the coverage file
+        coverage_file=$(find . -name "merged.cobertura.xml" -type f -print -quit)
+        if [ -z "$coverage_file" ]; then
+          echo "Coverage file not found!"
+          exit 1
+        fi
+        echo "Coverage file found: $coverage_file"
+
+        # Extract the 'line-rate' attribute from the root <coverage> element
+        coverage_percentage=$(xmllint --xpath "string(/coverage/@line-rate)" "$coverage_file")
+        if [ -z "$coverage_percentage" ]; then
+          echo "Failed to extract coverage percentage!"
+          exit 1
+        fi
+        echo "Raw Coverage Percentage: $coverage_percentage"
+        coverage_percentage=$(echo "$coverage_percentage * 100" | bc -l)
+        coverage_percentage=$(printf "%.2f" "$coverage_percentage")
+        echo "Coverage Percentage: $coverage_percentage%"
+        echo "coverage_percentage=$coverage_percentage" >> $GITHUB_OUTPUT
 
     - name: Upload Coverage Report
       uses: actions/upload-artifact@v4
@@ -55,53 +83,14 @@ jobs:
         name: CoverageReport
         path: ./CoverageReport
 
-    - name: Publish coverage
-      uses: irongut/CodeCoverageSummary@v1.3.0
-      with:
-        filename: '**/TestResults/**/coverage.cobertura.xml'
-        badge: true
-        fail_below_min: true
-        format: markdown
-        indicators: true
-        output: both
-        thresholds: '30 60'
+    - name: Print Coverage Percentage and validate minimum coverage
+      run: |
+        echo "Coverage Percentage: ${{ steps.coverage.outputs.coverage_percentage }}%"
 
-
-    # - name: Extract Coverage Percentage
-    #   id: coverage
-    #   run: |
-    #     # Install xmllint if not already installed
-    #     sudo apt-get update
-    #     sudo apt-get install -y libxml2-utils bc
-
-    #     # Find the coverage file
-    #     coverage_file=$(find . -name "merged.cobertura.xml" -type f -print -quit)
-    #     if [ -z "$coverage_file" ]; then
-    #       echo "Coverage file not found!"
-    #       exit 1
-    #     fi
-    #     echo "Coverage file found: $coverage_file"
-
-    #     # Extract the 'line-rate' attribute from the root <coverage> element
-    #     coverage_percentage=$(xmllint --xpath "string(/coverage/@line-rate)" "$coverage_file")
-    #     if [ -z "$coverage_percentage" ]; then
-    #       echo "Failed to extract coverage percentage!"
-    #       exit 1
-    #     fi
-    #     echo "Raw Coverage Percentage: $coverage_percentage"
-    #     coverage_percentage=$(echo "$coverage_percentage * 100" | bc -l)
-    #     coverage_percentage=$(printf "%.2f" "$coverage_percentage")
-    #     echo "Coverage Percentage: $coverage_percentage%"
-    #     echo "coverage_percentage=$coverage_percentage" >> $GITHUB_OUTPUT
-
-    # - name: Print Coverage Percentage and validate minimum coverage
-    #   run: |
-    #     echo "Coverage Percentage: ${{ steps.coverage.outputs.coverage_percentage }}%"
-
-    #     if [[ $(bc <<< "${{ steps.coverage.outputs.coverage_percentage }} < 70.0") -eq 1 ]]; then
-    #       echo "Coverage percentage is less than 70%!"
-    #       exit 1
-    #     fi
+        if [[ $(bc <<< "${{ steps.coverage.outputs.coverage_percentage }} < 70.0") -eq 1 ]]; then
+          echo "Coverage percentage is less than 70%!"
+          exit 1
+        fi    
         
   deploy:
     name: Deploy
