@@ -402,3 +402,5 @@ FodyWeavers.xsd
 
 # testes sepcflow
 *.feature.cs
+.sonarqube/*
+TestResults.trx

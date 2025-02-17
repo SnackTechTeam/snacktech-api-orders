@@ -1,8 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace SnackTech.Orders.Common.Dto.Api;
 
-[ExcludeFromCodeCoverage]
 public class ClienteDto
 {
     public Guid IdentificacaoCliente { get; set; }

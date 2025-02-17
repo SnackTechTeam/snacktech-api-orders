@@ -3,9 +3,11 @@ using SnackTech.Orders.Common.Dto.Api;
 using SnackTech.Orders.Common.Interfaces.DataSources;
 using SnackTech.Orders.Core.Interfaces;
 using SnackTech.Orders.Core.UseCases;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SnackTech.Orders.Core.Controllers;
 
+[ExcludeFromCodeCoverage]
 public class ClienteController(IClienteDataSource clienteDataSource) : IClienteController
 {
     public async Task<ResultadoOperacao<ClienteDto>> CadastrarNovoCliente(ClienteSemIdDto clienteSemIdDto)

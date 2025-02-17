@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using SnackTech.Orders.Driver.API.CustomResponses;
-using System.Runtime.CompilerServices;
 using SnackTech.Orders.Common.Dto.Api;
+using SnackTech.Orders.Driver.API.CustomResponses;
 
-[assembly: InternalsVisibleTo("SnackTech.Driver.API.Tests")]
 namespace SnackTech.Orders.Driver.API.Controllers
 {
     public abstract class CustomBaseController(ILogger logger) : ControllerBase

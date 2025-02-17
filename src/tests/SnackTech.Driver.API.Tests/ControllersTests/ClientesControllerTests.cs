@@ -1,141 +1,200 @@
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Logging;
-//using Moq;
-//using SnackTech.Driver.API.Controllers;
-//using SnackTech.Driver.API.CustomResponses;
-//using SnackTech.Domain.Common;
-//using SnackTech.Domain.DTOs.Driving.Cliente;
-//using SnackTech.Domain.Ports.Driving;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using SnackTech.Orders.Common.Dto.Api;
+using SnackTech.Orders.Core.Interfaces;
+using SnackTech.Orders.Driver.API.Controllers;
+using SnackTech.Orders.Driver.API.CustomResponses;
 
-//namespace SnackTech.Driver.API.Tests.ControllersTests
-//{
-//    public class ClientesControllerTests
-//    {
-//        private readonly Mock<ILogger<ClientesController>> logger;
-//        private readonly Mock<IClienteService> clienteService;
-//        private readonly ClientesController clientesController;
-//        public ClientesControllerTests(){
-//            logger = new Mock<ILogger<ClientesController>>();
-//            clienteService = new Mock<IClienteService>();
-//            clientesController = new ClientesController(logger.Object, clienteService.Object);
-//        }
+namespace SnackTech.Orders.Driver.API.Tests.ControllersTests
+{
+    public class ClientesControllerTests
+    {
+        private readonly Mock<ILogger<ClientesController>> logger;
+        private readonly Mock<IClienteController> _clienteController;
+        private readonly ClientesController _clientesController;
+        
+        public ClientesControllerTests()
+        {
+            logger = new Mock<ILogger<ClientesController>>();
+            _clienteController = new Mock<IClienteController>();
+            _clientesController = new ClientesController(logger.Object, _clienteController.Object);
+        }
 
-//        [Fact]
-//        public async Task PostWithSuccess(){
-//            var retornoCliente = new RetornoCliente{};
-//            var cadastroCliente = new CadastroCliente();
-//            clienteService.Setup(c => c.Cadastrar(It.IsAny<CadastroCliente>()))
-//                            .ReturnsAsync(new Result<RetornoCliente>(retornoCliente));
+        #region Post
 
-//            var resultado = await clientesController.Post(cadastroCliente);
+        [Fact]
+        public async Task PostWithSuccess()
+        {
+            //Arrange
+            var clienteId = Guid.NewGuid();
+            var cadastroCliente = new ClienteSemIdDto
+            {
+                Cpf = "00000000191",
+                Email = "email@email.com",
+                Nome = "nome"
+            };
 
-//            Assert.IsType<OkObjectResult>(resultado);
-//        }
+            var retornoCliente = new ClienteDto 
+            { 
+                IdentificacaoCliente = clienteId,
+                Cpf = cadastroCliente.Cpf,
+                Email = cadastroCliente.Email,
+                Nome = cadastroCliente.Nome
+            };
 
-//        [Fact]
-//        public async Task PostWithBadRequest(){
-//            var cadastroCliente = new CadastroCliente();
-//            clienteService.Setup(c => c.Cadastrar(It.IsAny<CadastroCliente>()))
-//                            .ReturnsAsync(new Result<RetornoCliente>("Erro de lógica",true));
 
-//            var resultado = await clientesController.Post(cadastroCliente);
+            _clienteController.Setup(c => c.CadastrarNovoCliente(It.IsAny<ClienteSemIdDto>()))
+                            .ReturnsAsync(new ResultadoOperacao<ClienteDto>(retornoCliente));
 
-//            var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
-//            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
-//            Assert.Null(payload.Exception);
-//            Assert.Equal("Erro de lógica",payload.Message);
-//        }
+            //Act
+            var resultado = await _clientesController.Post(cadastroCliente);
 
-//        [Fact]
-//        public async Task PostWithInternalServerError(){
-//            var cadastroCliente = new CadastroCliente();
-//            clienteService.Setup(c => c.Cadastrar(It.IsAny<CadastroCliente>()))
-//                            .ThrowsAsync(new Exception("Erro inesperado"));
-            
-//            var resultado = await clientesController.Post(cadastroCliente);
-//            var objectResult = Assert.IsType<ObjectResult>(resultado);
-//            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+            //Assert
+            Assert.IsType<OkObjectResult>(resultado);           
+        }
 
-//            Assert.NotNull(payload.Exception);
-//            Assert.Equal("Erro inesperado",payload.Message);
-//        }
+        [Fact]
+        public async Task PostWithBadRequest()
+        {
+            //Arrange
+            var cadastroCliente = new ClienteSemIdDto
+            {
+                Cpf = "00000000191",
+                Email = "email@email.com",
+                Nome = "nome"
+            };
 
-//        [Fact]
-//        public async Task GetByCpfWithSuccess(){
-//            var cpf = "42572271095";
-//            var retornoCliente = new RetornoCliente{};
-//            clienteService.Setup(c => c.IdentificarPorCpf(It.IsAny<string>()))
-//                            .ReturnsAsync(new Result<RetornoCliente>(retornoCliente));
+            _clienteController.Setup(c => c.CadastrarNovoCliente(It.IsAny<ClienteSemIdDto>()))
+                            .ReturnsAsync(new ResultadoOperacao<ClienteDto>("Erro de lógica", true));
 
-//            var resultado = await clientesController.GetByCpf(cpf);
+            //Act
+            var resultado = await _clientesController.Post(cadastroCliente);
 
-//            Assert.IsType<OkObjectResult>(resultado);
-//        }
+            //Assert
+            var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
+            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+            Assert.Null(payload.Exception);
+            Assert.Equal("Erro de lógica", payload.Message);
+        }
 
-//        [Fact]
-//        public async Task GetByCpfWithBadRequest(){
-//             var cpf = "42572271095";
-//            clienteService.Setup(c => c.IdentificarPorCpf(It.IsAny<string>()))
-//                            .ReturnsAsync(new Result<RetornoCliente>("Erro de lógica",true));
+        [Fact]
+        public async Task PostWithInternalServerError()
+        {
+            //Arrange
+            var cadastroCliente = new ClienteSemIdDto
+            {
+                Cpf = "00000000191",
+                Email = "email@email.com",
+                Nome = "nome"
+            };
 
-//            var resultado = await clientesController.GetByCpf(cpf);
+            _clienteController.Setup(c => c.CadastrarNovoCliente(It.IsAny<ClienteSemIdDto>()))
+                            .ThrowsAsync(new Exception("Erro inesperado"));
 
-//            var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
-//            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
-//            Assert.Null(payload.Exception);
-//            Assert.Equal("Erro de lógica",payload.Message);
-//        }
+            //Act
+            var resultado = await _clientesController.Post(cadastroCliente);
 
-//        [Fact]
-//        public async Task GetByCpfWithInternalServerError(){
-//            var cpf = "42572271095";
-//            clienteService.Setup(c => c.IdentificarPorCpf(It.IsAny<string>()))
-//                            .ThrowsAsync(new Exception("Erro inesperado"));
-            
-//            var resultado = await clientesController.GetByCpf(cpf);
-//            var objectResult = Assert.IsType<ObjectResult>(resultado);
-//            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+            //Assert
+            var objectResult = Assert.IsType<ObjectResult>(resultado);
+            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
 
-//            Assert.NotNull(payload.Exception);
-//            Assert.Equal("Erro inesperado",payload.Message);
-//        }
+            Assert.NotNull(payload.Exception);
+            Assert.Equal("Erro inesperado", payload.Message);
+        }
 
-//        [Fact]
-//        public async Task GetDefaultClientWithSuccess(){
-//            var retornoCliente = new RetornoCliente{};
-//            clienteService.Setup(c => c.SelecionarClientePadrao())
-//                            .ReturnsAsync(new Result<RetornoCliente>(retornoCliente));
+        #endregion
 
-//            var resultado = await clientesController.GetDefaultClient();
+        #region GetByCpfWithBadRequest
 
-//            Assert.IsType<OkObjectResult>(resultado);
-//        }
+        [Fact]
+        public async Task GetByCpfWithSuccess()
+        {
+            var cpf = "00000000191";
+            var retornoCliente = new ClienteDto { };
+            _clienteController.Setup(c => c.IdentificarPorCpf(It.IsAny<string>()))
+                            .ReturnsAsync(new ResultadoOperacao<ClienteDto>(retornoCliente));
 
-//        [Fact]
-//        public async Task GetDefaultClientWithBadRequest(){
+            var resultado = await _clientesController.GetByCpf(cpf);
 
-//            clienteService.Setup(c => c.SelecionarClientePadrao())
-//                            .ReturnsAsync(new Result<RetornoCliente>("Erro de lógica",true));
+            Assert.IsType<OkObjectResult>(resultado);
+        }
 
-//            var resultado = await clientesController.GetDefaultClient();
+        [Fact]
+        public async Task GetByCpfWithBadRequest()
+        {
+            var cpf = "00000000191";
+            _clienteController.Setup(c => c.IdentificarPorCpf(It.IsAny<string>()))
+                            .ReturnsAsync(new ResultadoOperacao<ClienteDto>("Erro de lógica", true));
 
-//            var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
-//            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
-//            Assert.Null(payload.Exception);
-//            Assert.Equal("Erro de lógica",payload.Message);
-//        }
+            var resultado = await _clientesController.GetByCpf(cpf);
 
-//        [Fact]
-//        public async Task GetDefaultClientWithInternalServerError(){
-//            clienteService.Setup(c => c.SelecionarClientePadrao())
-//                            .ThrowsAsync(new Exception("Erro inesperado"));
-            
-//            var resultado = await clientesController.GetDefaultClient();
-//            var objectResult = Assert.IsType<ObjectResult>(resultado);
-//            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+            var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
+            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+            Assert.Null(payload.Exception);
+            Assert.Equal("Erro de lógica", payload.Message);
+        }
 
-//            Assert.NotNull(payload.Exception);
-//            Assert.Equal("Erro inesperado",payload.Message);
-//        }
-//    }
-//}
+        [Fact]
+        public async Task GetByCpfWithInternalServerError()
+        {
+            var cpf = "00000000191";
+            _clienteController.Setup(c => c.IdentificarPorCpf(It.IsAny<string>()))
+                            .ThrowsAsync(new Exception("Erro inesperado"));
+
+            var resultado = await _clientesController.GetByCpf(cpf);
+            var objectResult = Assert.IsType<ObjectResult>(resultado);
+            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+
+            Assert.NotNull(payload.Exception);
+            Assert.Equal("Erro inesperado", payload.Message);
+        }
+
+        #endregion
+
+        #region GetDefaultClientWithSuccess
+
+        [Fact]
+        public async Task GetDefaultClientWithSuccess()
+        {
+            var retornoCliente = new ClienteDto { };
+            _clienteController.Setup(c => c.SelecionarClientePadrao())
+                            .ReturnsAsync(new ResultadoOperacao<ClienteDto>(retornoCliente));
+
+            var resultado = await _clientesController.GetDefaultClient();
+
+            Assert.IsType<OkObjectResult>(resultado);
+        }
+
+        [Fact]
+        public async Task GetDefaultClientWithBadRequest()
+        {
+
+            _clienteController.Setup(c => c.SelecionarClientePadrao())
+                            .ReturnsAsync(new ResultadoOperacao<ClienteDto>("Erro de lógica", true));
+
+            var resultado = await _clientesController.GetDefaultClient();
+
+            var objectResult = Assert.IsType<BadRequestObjectResult>(resultado);
+            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+            Assert.Null(payload.Exception);
+            Assert.Equal("Erro de lógica", payload.Message);
+        }
+
+        [Fact]
+        public async Task GetDefaultClientWithInternalServerError()
+        {
+            _clienteController.Setup(c => c.SelecionarClientePadrao())
+                            .ThrowsAsync(new Exception("Erro inesperado"));
+
+            var resultado = await _clientesController.GetDefaultClient();
+            var objectResult = Assert.IsType<ObjectResult>(resultado);
+            var payload = Assert.IsType<ErrorResponse>(objectResult.Value);
+
+            Assert.NotNull(payload.Exception);
+            Assert.Equal("Erro inesperado", payload.Message);
+        }
+
+        #endregion
+    }
+}

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SnackTech.Orders.Common.Dto.ApiSources.Payments
+﻿namespace SnackTech.Orders.Common.Dto.ApiSources.Payments
 {
     public class ClientePagamentoDto
     {

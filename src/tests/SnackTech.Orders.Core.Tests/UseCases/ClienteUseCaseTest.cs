@@ -43,8 +43,8 @@ namespace SnackTech.Orders.Core.Tests.UseCases
             var resultado = await ClienteUseCase.CriarNovoCliente(clienteDto, _clienteGatewayMock.Object);
 
             // Assert
-            resultado.Sucesso.Should().BeTrue();
-            resultado.Dados.Should().NotBeNull();
+            resultado.TeveSucesso().Should().BeTrue();
+            resultado.RecuperarDados().Should().NotBeNull();
             resultado.Dados!.Cpf.Should().Be(clienteDto.Cpf);
             resultado.Dados!.Email.Should().Be(clienteDto.Email);
         }
@@ -70,7 +70,7 @@ namespace SnackTech.Orders.Core.Tests.UseCases
 
             // Assert
             resultado.Sucesso.Should().BeFalse();
-            resultado.Dados.Should().BeNull();
+            resultado.Dados.Should().BeNull();            
             resultado.Mensagem.Should().Contain($"Cliente com CPF {clienteDto.Cpf} já cadastrado.");
         }
 
@@ -151,6 +151,7 @@ namespace SnackTech.Orders.Core.Tests.UseCases
             // Assert
             resultado.Sucesso.Should().BeFalse();
             resultado.Dados.Should().BeNull();
+            resultado.TeveExcecao().Should().Be(true);
             resultado.Mensagem.Should().Contain("Erro inesperado");
         }
 

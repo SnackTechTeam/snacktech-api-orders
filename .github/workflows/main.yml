@@ -46,7 +46,7 @@ jobs:
         dotnet-coverage merge *.cobertura.xml --recursive --output merged.cobertura.xml --output-format cobertura
 
     - name: Generate Coverage Report
-      run: reportgenerator -reports:./**/merged.cobertura.xml -targetdir:./CoverageReport -reporttypes:Html
+      run: reportgenerator -reports:./**/merged.cobertura.xml -targetdir:./CoverageReport -reporttypes:Html -filefilters:-**/Migrations*
 
     - name: Extract Coverage Percentage
       id: coverage
@@ -75,10 +75,21 @@ jobs:
         echo "Coverage Percentage: $coverage_percentage%"
         echo "coverage_percentage=$coverage_percentage" >> $GITHUB_OUTPUT
 
-    - name: Print Coverage Percentage
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: CoverageReport
+        path: ./CoverageReport
+
+    - name: Print Coverage Percentage and validate minimum coverage
       run: |
         echo "Coverage Percentage: ${{ steps.coverage.outputs.coverage_percentage }}%"
 
+        if [[ $(bc <<< "${{ steps.coverage.outputs.coverage_percentage }} < 70.0") -eq 1 ]]; then
+          echo "Coverage percentage is less than 70%!"
+          exit 1
+        fi    
+        
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
