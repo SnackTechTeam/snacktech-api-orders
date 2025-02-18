@@ -48,6 +48,12 @@ docker compose up -d
 ```
 Dessa forma seus containers iniciarão em background.
 
+
+## Cobertura de testes automatizados
+
+![Cobertura de teste](./cobertura.png)
+
+
 ## Equipe
 
 * Adriano de Melo Costa. Email: adriano.dmcosta@gmail.com
